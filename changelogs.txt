@@ -1,0 +1,6 @@
+Change logs for tzportfolio plus v1.0.2
+
+1. Fix some errors with v1.0.1
+2. Fix error select tags with layout portfolio of module mod_tz_portfolio_plus_articles.
+3. Fix error upload image with add-ons: image, image gallery of v1.0.1
+4. Feature: Preset for template style.
