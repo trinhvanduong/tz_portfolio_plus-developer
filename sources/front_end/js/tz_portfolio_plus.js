@@ -81,7 +81,7 @@
         }
 
         var $params = $var.params,
-        $isotope_options    = $var.isotope_options;
+            $isotope_options    = $var.isotope_options;
 
         switch($params.orderby_sec){
             default:
@@ -126,10 +126,10 @@
         }
 
         if(!$isotope_options.core.layoutMode.length){
-            $isotope_options.core.layoutMode  = 'masonry';
-        }else{
             if($params.layout_type.length){
                 $isotope_options.core.layoutMode  = $params.layout_type[0];
+            }else {
+                $isotope_options.core.layoutMode = 'masonry';
             }
         }
 
@@ -357,7 +357,7 @@
             'orderby_sec'                   : 'rdate',
             'tz_show_filter'                : 1,
             'filter_tags_categories_order'  : 'auto',
-            'tz_portfolio_plus_layout'           : 'ajaxButton',
+            'tz_portfolio_plus_layout'      : 'ajaxButton',
             'comment_function_type'         : 'default',
             'tz_filter_type'                : 'categories',
             'show_all_filter'               : 0,
@@ -567,7 +567,7 @@
                                     if (data.length) {
                                         var tzCategories = $(data);
                                         $($var.sortParentTag).append(tzCategories);
-                                         $tzppIsotope.loadPortfolio();
+                                        $tzppIsotope.loadPortfolio();
 
                                         if ($params.filter_tags_categories_order) {
                                             //Sort tags or categories filter
