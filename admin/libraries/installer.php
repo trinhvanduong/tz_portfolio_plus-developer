@@ -20,8 +20,12 @@
 // No direct access
 defined('_JEXEC') or die;
 
+JLoader::import('com_tz_portfolio_plus.includes.framework',JPATH_ADMINISTRATOR.'/components');
+
 class TZ_Portfolio_PlusInstaller extends JInstaller
 {
+    protected static $instances;
+
     public function __construct($basepath = __DIR__, $classprefix = 'TZ_Portfolio_PlusInstallerAdapter', $adapterfolder = 'adapter')
     {
         parent::__construct($basepath, $classprefix, $adapterfolder);

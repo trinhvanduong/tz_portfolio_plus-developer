@@ -63,35 +63,20 @@ class TZ_Portfolio_Plus_AddOnControllerLegacy extends JControllerLegacy{
                 $template = TZ_Portfolio_PlusTemplate::getTemplate(true);
                 $tplparams = $template->params;
 
-//                // Create TZ Portfolio Plus template's path
-//                $tpath = COM_TZ_PORTFOLIO_PLUS_TEMPLATE_PATH . DIRECTORY_SEPARATOR . $template->template
-//                    . DIRECTORY_SEPARATOR . 'html' . DIRECTORY_SEPARATOR . $tplparams->get('layout', 'default')
-//                    . DIRECTORY_SEPARATOR . $viewName . DIRECTORY_SEPARATOR . 'plg_'
-//                    . $addon -> type . '_' . $addon -> name;
-
                 // Create default template of tz_portfolio_plus
                 $defaultPath = null;
                 $tpath = null;
+
                 if(isset($template -> home_path) && $template -> home_path){
-                    $defaultPath    = $template -> home_path. DIRECTORY_SEPARATOR.$viewName . DIRECTORY_SEPARATOR . 'plg_'
+                    $defaultPath    = $template -> home_path. DIRECTORY_SEPARATOR
+                        .($viewName?$viewName . DIRECTORY_SEPARATOR:''). 'plg_'
                         . $addon -> type . '_' . $addon -> name;
                 }
                 if(isset($template -> base_path) && $template -> base_path){
-                    $tpath    = $template -> base_path. DIRECTORY_SEPARATOR.$viewName . DIRECTORY_SEPARATOR . 'plg_'
+                    $tpath    = $template -> base_path. DIRECTORY_SEPARATOR
+                        .($viewName?$viewName . DIRECTORY_SEPARATOR:'') . 'plg_'
                         . $addon -> type . '_' . $addon -> name;
                 }
-
-                // Create default template of tz_portfolio_plus
-//                $dTemplate = TZ_Portfolio_PlusTemplate::getTemplateDefault();
-//                $defaultPath = null;
-//
-//                if ($template->id != $dTemplate->id) {
-//                    $dtplparams = $dTemplate->params;
-//                    $defaultPath = COM_TZ_PORTFOLIO_PLUS_TEMPLATE_PATH . DIRECTORY_SEPARATOR . $dTemplate->template
-//                        . DIRECTORY_SEPARATOR . 'html' . DIRECTORY_SEPARATOR . $dtplparams->get('layout', 'default')
-//                        . DIRECTORY_SEPARATOR . $viewName . DIRECTORY_SEPARATOR . 'plg_'
-//                        . $addon -> type . '_' . $addon -> name;
-//                }
 
                 $vpaths = $view->get('_path');
                 $vpaths = $vpaths['template'];
@@ -108,7 +93,6 @@ class TZ_Portfolio_Plus_AddOnControllerLegacy extends JControllerLegacy{
                 $_template = JFactory::getApplication()->getTemplate();
                 $jPathSite = JPATH_SITE . '/templates/' . $_template . '/html/com_tz_portfolio_plus/'
                     . $viewName . '/plg_' . $addon -> type . '_' . $addon -> name;
-
 
                 if ($tplparams->get('override_html_template_site', 0)) {
 

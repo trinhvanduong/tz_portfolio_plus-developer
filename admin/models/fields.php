@@ -24,6 +24,17 @@ jimport('joomla.application.component.modellist');
 
 class TZ_Portfolio_PlusModelFields extends JModelList{
     public function __construct($config = array()){
+        if (empty($config['filter_fields']))
+        {
+            $config['filter_fields'] = array(
+                'id', 'f.id',
+                'title', 'f.title',
+                'groupname', 'f.groupname',
+                'type', 'f.type',
+                'published', 'f.published',
+                'ordering', 'f.ordering'
+            );
+        }
         parent::__construct($config);
     }
 
@@ -45,18 +56,12 @@ class TZ_Portfolio_PlusModelFields extends JModelList{
 
         $search  = $app -> getUserStateFromRequest($context.'.filter_search','filter_search',null,'string');
         $this -> setState('filter_search',$search);
-
-        $order  = $app -> getUserStateFromRequest($context.'.filter_order','filter_order','f.ordering','string');
-        $this -> setState('filter_order',$order);
-
-        $orderDir  = $app -> getUserStateFromRequest($context.'.filter_order_Dir','filter_order_Dir','asc','string');
-        $this -> setState('filter_order_Dir',$orderDir);
     }
 
     protected function getListQuery(){
         $db     = $this -> getDbo();
         $query  = $db -> getQuery(true);
-        $query -> select('f.*');
+        $query -> select('f.*, fg.id AS groupid');
         $query -> from('#__tz_portfolio_plus_fields AS f');
         $query -> join('LEFT','#__tz_portfolio_plus_field_fieldgroup_map AS x ON f.id=x.fieldsid');
         $query -> join('INNER','#__tz_portfolio_plus_fieldgroups AS fg ON fg.id=x.groupid');
@@ -93,6 +98,11 @@ class TZ_Portfolio_PlusModelFields extends JModelList{
         $orderCol	= $this->state->get('list.ordering', 'f.id');
         $orderDirn	= $this->state->get('list.direction', 'desc');
 
+        if(isset($filter_group) && $filter_group){
+            $orderCol   = 'x.ordering';
+            $query -> select('x.ordering AS ordering');
+        }
+
         $query->order($db->escape($orderCol.' '.$orderDirn));
 
         return $query;
@@ -104,7 +114,7 @@ class TZ_Portfolio_PlusModelFields extends JModelList{
             if($groups = $groupModel -> getItemsContainFields()){
                 foreach($items as $item){
                     if(isset($groups[$item -> id])){
-                        $item -> groupname  = $groups[$item -> id];
+                        $item -> groupname      = $groups[$item -> id];
                     }
                 }
             }

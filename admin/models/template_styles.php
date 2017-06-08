@@ -49,12 +49,6 @@ class TZ_Portfolio_PlusModelTemplate_Styles extends JModelList
 
         $template  = $this -> getUserStateFromRequest('com_tz_portfolio_plus.styles.filter.template','filter_template',null,'string');
         $this -> setState('filter.template',$template);
-
-        $order  = $this -> getUserStateFromRequest('com_tz_portfolio_plus.styles.filter_order','filter_order',null,'string');
-        $this -> setState('filter_order',$order);
-
-        $orderDir  = $this -> getUserStateFromRequest('com_tz_portfolio_plus.styles.filter_order_Dir','filter_order_Dir','asc','string');
-        $this -> setState('filter_order_Dir',$orderDir);
     }
 
     function getListQuery(){

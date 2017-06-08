@@ -21,11 +21,65 @@ defined('_JEXEC') or die;
 
 class TZ_Portfolio_PlusRouter extends JComponentRouterBase
 {
+    protected $addonRouters     = array();
+
+    public function getAddonRouter($addon, $group = 'content'){
+        if (!isset($this->addonRouters[$addon]))
+        {
+            $addonname  = ucfirst($addon);
+            $class      = 'PlgTZ_Portfolio_Plus'.ucfirst($group).$addonname . 'Router';
+
+
+            if (!class_exists($class))
+            {
+                // Use the component routing handler if it exists
+                $path   = JPATH_SITE.'/components/com_tz_portfolio_plus/addons/'.$group.'/'.$addon.'/router.php';
+
+                // Use the custom routing handler if it exists
+                if (file_exists($path))
+                {
+                    require_once $path;
+                }
+            }
+
+            if (class_exists($class))
+            {
+                $reflection = new ReflectionClass($class);
+
+                if (in_array('JComponentRouterInterface', $reflection->getInterfaceNames()))
+                {
+                    $this->addonRouters[$addon] = new $class($this->app, $this->menu);
+                }
+            }
+        }
+
+        if(isset($this->addonRouters[$addon]) && $this -> addonRouters[$addon]) {
+            return $this->addonRouters[$addon];
+        }
+        return false;
+    }
     public function build(&$query)
     {
         $params		= JComponentHelper::getParams('com_tz_portfolio_plus');
         if($params -> get('tzSef',1)) {
-            return $this -> sefBuild($query);
+            $segments   = $this -> sefBuild($query);
+
+            // Build addon router
+            if($query && isset($query['addon_id'])){
+                $addon_id           = $query['addon_id'];
+                if($addon              = TZ_Portfolio_PlusPluginHelper::getPluginById($addon_id)) {
+                    $addonSegments[] = 'addon_' . $query['addon_id'];
+
+                    if ($router = $this->getAddonRouter($addon->name, $addon->type)) {
+                        $segs = $router->build($query);
+                        $addonSegments = array_merge($addonSegments, $segs);
+                    }
+                    unset($query['addon_id']);
+
+                    $segments = array_merge($segments, $addonSegments);
+                }
+            }
+            return $segments;
         }else{
             return $this -> notSefBuild($query);
         }
@@ -34,12 +88,41 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
 
     public function parse(&$segments)
     {
+        $vars   = array();
+        $tmp    = null;
+        $total  = count($segments);
+        for ($i = 0; $i < $total; $i++)
+        {
+            if(strpos($segments[$i],'addon_') !== false) {
+                $tmp    = $i;
+                break;
+            }
+        }
+
+        // Get addon parse router
+        $addonVars  = array();
+        if($tmp !== null){
+            $addonSegments  = array_slice($segments, $tmp, $total);
+            $segments       = array_slice($segments, 0, $tmp);
+            if(count($addonSegments)){
+                $addon_id           = (int) str_replace('addon_','',$addonSegments[0]);
+                $addonVars['addon_id']   = $addon_id;
+                $addon              = TZ_Portfolio_PlusPluginHelper::getPluginById($addon_id);
+                if($router = $this -> getAddonRouter($addon -> name, $addon -> type)) {
+                    $_addonVars = $router->parse($addonSegments);
+                    $addonVars  = array_merge($addonVars, $_addonVars);
+                }
+            }
+        }
+
         $params		= JComponentHelper::getParams('com_tz_portfolio_plus');
         if($params -> get('tzSef',1)) {
-            return $this -> sefParse($segments);
+            $vars   = $this -> sefParse($segments);
         }else{
-            return $this -> notSefParse($segments);
+            $vars   = $this -> notSefParse($segments);
         }
+        $vars   = array_merge($vars, $addonVars);
+        return $vars;
     }
 
     protected function sefBuild(&$query){
@@ -142,7 +225,6 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
             }
 
             $categories = JCategories::getInstance('TZ_Portfolio_Plus');
-//            $categories = TZ_Portfolio_PlusCategories::getInstance('tz_portfolio_plus');
             $category = $categories->get($catid);
 
             if (!$category) {
@@ -348,15 +430,12 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
         }
 
         if ($view == 'date') {
-            if (!$menuItemGiven) {
-                if ($view != $params -> get('sef_date_prefix','date')) {
-                    $segments[] = $params -> get('sef_date_prefix','date');
-                }else {
-                    $segments[] = $view;
-                }
-                unset($query['view']);
+            if ($view != $params -> get('sef_date_prefix','date')) {
+                $segments[] = $params -> get('sef_date_prefix','date');
+            }else {
+                $segments[] = $view;
             }
-
+            unset($query['view']);
             $bool = false;
             if (isset($query['year']) && isset($query['month'])) {
                 $bool = true;
@@ -376,6 +455,16 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
                 }
             }
 
+        }
+
+        if($view == 'search'){
+            if($menuItemGiven){
+                $segments[] = $query['view'];
+            }else{
+                $segments[] = $view;
+            }
+            unset($query['view']);
+            return $segments;
         }
 
         // if the layout is specified and it is the same as the layout in the menu item, we
@@ -684,6 +773,16 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
 
         }
 
+        if($view == 'search'){
+            if($menuItemGiven){
+                $segments[] = $query['view'];
+            }else{
+                $segments[] = $view;
+            }
+            unset($query['view']);
+            return $segments;
+        }
+
         // if the layout is specified and it is the same as the layout in the menu item, we
         // unset it so it doesn't go into the query string.
         if (isset($query['layout'])) {
@@ -714,7 +813,6 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
     }
 
     protected function sefParse(&$segments){
-
         $total = count($segments);
         $vars = array();
 
@@ -789,6 +887,11 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
                 return $vars;
             }
 
+            if($segments[0] == 'search'){
+                $vars['view']   = 'search';
+                return $vars;
+            }
+
             // we check to see if an alias is given.  If not, we assume it is an article
             //Old
             if (strpos($segments[0], ':') === false) {
@@ -839,7 +942,7 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
         // because the first segment will have the target category id prepended to it.  If the
         // last segment has a number prepended, it is an article, otherwise, it is a category.
 
-        if (!$advanced) {
+        if (!$advanced && $count) {
 
             if ($segments[0] == $params -> get('sef_tags_prefix','tags')) {
                 $vars['view'] = 'tags';
@@ -935,29 +1038,34 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
 
         // we get the category id from the menu item and search from there
         $id = $item->query['id'];
-        $category = JCategories::getInstance('TZ_Portfolio_Plus')->get($id);
 
-        if (!$category) {
-            JError::raiseError(404, JText::_('COM_TZ_PORTFOLIO_PLUS_ERROR_PARENT_CATEGORY_NOT_FOUND'));
-            return $vars;
+        if($item -> query['view'] == 'portfolio') {
+            $category = JCategories::getInstance('TZ_Portfolio_Plus')->get($id);
+
+            if (!$category) {
+                JError::raiseError(404, JText::_('COM_TZ_PORTFOLIO_PLUS_ERROR_PARENT_CATEGORY_NOT_FOUND'));
+                return $vars;
+            }
+
+            $categories = $category->getChildren();
+            $vars['catid'] = $id;
         }
-
-        $categories = $category->getChildren();
-        $vars['catid'] = $id;
         $vars['id'] = $id;
         $found = 0;
 
         foreach ($segments as $segment) {
             $segment = str_replace(':', '-', $segment);
 
-            foreach ($categories as $category) {
-                if ($category->alias == $segment) {
-                    $vars['id'] = $category->id;
-                    $vars['catid'] = $category->id;
-                    $vars['view'] = 'portfolio';
-                    $categories = $category->getChildren();
-                    $found = 1;
-                    break;
+            if(isset($categories) && $categories){
+                foreach ($categories as $category) {
+                    if ($category->alias == $segment) {
+                        $vars['id'] = $category->id;
+                        $vars['catid'] = $category->id;
+                        $vars['view'] = 'portfolio';
+                        $categories = $category->getChildren();
+                        $found = 1;
+                        break;
+                    }
                 }
             }
 
@@ -985,6 +1093,10 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
             }
 
             $found = 0;
+        }
+
+        if(!isset($vars['view'])){
+            $vars['view']   = $item -> query['view'];
         }
 
         return $vars;
@@ -1043,6 +1155,12 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
                 }
                 return $vars;
             }
+
+            if($segments[0] == 'search'){
+                $vars['view']   = 'search';
+                return $vars;
+            }
+
             // we check to see if an alias is given.  If not, we assume it is an article
             //Old
             if (strpos($segments[0], ':') === false) {
@@ -1143,29 +1261,33 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
 
         // we get the category id from the menu item and search from there
         $id = $item->query['id'];
-        $category = JCategories::getInstance('TZ_Portfolio_Plus')->get($id);
+        if($item -> query['view'] == 'portfolio') {
+            $category = JCategories::getInstance('TZ_Portfolio_Plus')->get($id);
 
-        if (!$category) {
-            JError::raiseError(404, JText::_('COM_TZ_PORTFOLIO_PLUS_ERROR_PARENT_CATEGORY_NOT_FOUND'));
-            return $vars;
+            if (!$category) {
+                JError::raiseError(404, JText::_('COM_TZ_PORTFOLIO_PLUS_ERROR_PARENT_CATEGORY_NOT_FOUND'));
+                return $vars;
+            }
+
+            $categories = $category->getChildren();
+            $vars['catid'] = $id;
         }
-
-        $categories = $category->getChildren();
-        $vars['catid'] = $id;
         $vars['id'] = $id;
         $found = 0;
 
         foreach ($segments as $segment) {
             $segment = str_replace(':', '-', $segment);
 
-            foreach ($categories as $category) {
-                if ($category->alias == $segment) {
-                    $vars['id'] = $category->id;
-                    $vars['catid'] = $category->id;
-                    $vars['view'] = 'portfolio';
-                    $categories = $category->getChildren();
-                    $found = 1;
-                    break;
+            if(isset($categories) && $categories){
+                foreach ($categories as $category) {
+                    if ($category->alias == $segment) {
+                        $vars['id'] = $category->id;
+                        $vars['catid'] = $category->id;
+                        $vars['view'] = 'portfolio';
+                        $categories = $category->getChildren();
+                        $found = 1;
+                        break;
+                    }
                 }
             }
 
@@ -1193,6 +1315,10 @@ class TZ_Portfolio_PlusRouter extends JComponentRouterBase
             }
 
             $found = 0;
+        }
+
+        if(!isset($vars['view'])){
+            $vars['view']   = 'article';
         }
 
         return $vars;

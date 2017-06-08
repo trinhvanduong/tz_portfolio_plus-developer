@@ -1,6 +1,15 @@
-Change logs for tzportfolio plus v1.0.2
+Change logs for tzportfolio plus v1.0.6
 
-1. Fix some errors with v1.0.1
-2. Fix error select tags with layout portfolio of module mod_tz_portfolio_plus_articles.
-3. Fix error upload image with add-ons: image, image gallery of v1.0.1
-4. Feature: Preset for template style.
+1. Fix error in router when the addon has have router (Fix in router.php file)
+2. Fix error when create group field first. (Fix of file models/group.php file in admin).
+3. Added filter module.
+4. Added options: List View (Show this field in article list view)
+	,  Details View (Show this field in article details view), Advanced Search (This field is searchable in advanced search mode)
+	in extrafield.
+5. Added search view.
+6. Display extrafield info in portfolio view, search view.
+7. Fix error sort article by ordering and by category order. (The script in file tz_portfolio_plus.js changed code).
+8. Fix error sort categories in back-end.
+9. Added option "Filter Secondary Category"
+10. Added sort extrafield by group field.
+11. Display Categories Assignment & Total fields for Field Groups in back-end.

@@ -273,15 +273,18 @@ class TZ_Portfolio_PlusViewArticle extends TZ_Portfolio_PlusViewLegacy
             &$item, &$item -> params, $offset));
         $item -> event -> afterDisplayAdditionInfo   = trim(implode("\n", $results));
 
-        if($this -> generateLayout && !empty($this -> generateLayout)) {
-            $results = $dispatcher->trigger('onContentDisplayArticleView', array('com_tz_portfolio_plus.article',
-                &$item, &$item->params, $offset));
-            $item->event->contentDisplayArticleView = trim(implode("\n", $results));
-        }
-
         $results    = $dispatcher -> trigger('onContentDisplayMediaType',array('com_tz_portfolio_plus.article',
             &$item, &$item -> params, $offset));
         $item -> event -> onContentDisplayMediaType    = trim(implode("\n", $results));
+
+        if($template   = TZ_Portfolio_PlusTemplate::getTemplate(true)){
+            $tplparams  = $template -> params;
+            if(!$tplparams -> get('use_single_layout_builder',1)){
+                $results = $dispatcher->trigger('onContentDisplayArticleView', array('com_tz_portfolio_plus.article',
+                    &$item, &$item->params, $offset));
+                $item->event->contentDisplayArticleView = trim(implode("\n", $results));
+            }
+        }
 
 		// Increment the hit counter of the article.
 		if (!$this->params->get('intro_only') && $offset == 0) {
@@ -317,7 +320,8 @@ class TZ_Portfolio_PlusViewArticle extends TZ_Portfolio_PlusViewLegacy
 
         // Get article's extrafields
         JLoader::import('extrafields', COM_TZ_PORTFOLIO_PLUS_SITE_HELPERS_PATH);
-        $extraFields    = TZ_Portfolio_PlusFrontHelperExtraFields::getExtraFields($this -> item, $params);
+        $extraFields    = TZ_Portfolio_PlusFrontHelperExtraFields::getExtraFields($this -> item, $params,
+            false, array('filter.detail_view' => true));
         $this -> item -> extrafields    = $extraFields;
 
 		//Escape strings for HTML output

@@ -74,3 +74,10 @@ div#removePreset.modal.fade.in{
     top: 20%;
 }
 /* End styles for modal box */
+
+.max-height-300{
+    width: 104%;
+    overflow: auto;
+    margin-top: 5px;
+    max-height: 311px;
+}

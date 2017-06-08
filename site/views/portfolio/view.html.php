@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 jimport('joomla.event.dispatcher');
 
+JHtml::addIncludePath(COM_TZ_PORTFOLIO_PLUS_PATH_SITE . '/helpers');
+
 tzportfolioplusimport('http_fetcher');
 
 class TZ_Portfolio_PlusViewPortfolio extends JViewLegacy
@@ -69,14 +71,10 @@ class TZ_Portfolio_PlusViewPortfolio extends JViewLegacy
             .'&amp;layout=default:item'.(($state -> get('filter.char'))?'&amp;char='.$state -> get('filter.char'):'')
             .($state -> get('filter.category_id')?'&amp;catid='.$state -> get('filter.category_id'):'');
 
-//        // If your site has used multilanguage
-//        if($lang = $input -> get('lang')){
-//            if(isset($language[$lang])) {
-//                $this->lang_sef = $lang;
-//                $this -> ajaxLink   .= '&amp;lang='.$lang;
-//            }
-//        }
-        $this -> ajaxLink   .= '&amp;Itemid='.$active -> id.'&amp;page=2';
+        if($active) {
+            $this->ajaxLink .= '&amp;Itemid=' . $active->id;
+        }
+        $this -> ajaxLink   .=  '&amp;page=2';
 
         $doc -> addStyleSheet('components/com_tz_portfolio_plus/css/isotope.min.css');
         $doc -> addScript('components/com_tz_portfolio_plus/js/jquery.isotope.min.js');
@@ -198,7 +196,9 @@ class TZ_Portfolio_PlusViewPortfolio extends JViewLegacy
         $this -> items          = $list;
         $this -> params         = $params;
         $this -> pagination     = $this -> get('Pagination');
-        $this -> Itemid         = $active -> id;
+        if($active) {
+            $this->Itemid = $active->id;
+        }
         $this -> char           = $state -> get('filter.char');
         $this -> availLetter    = $this -> get('AvailableLetter');
 

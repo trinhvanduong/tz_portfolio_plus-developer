@@ -223,6 +223,8 @@ if(!isset($item -> mediatypes) || (isset($item -> mediatypes) && !in_array($item
 
 <?php echo $item -> event -> contentDisplayListView; ?>
 
+    <?php echo $this -> loadTemplate('extrafields');?>
+
     <?php if($params -> get('show_tag_readmore',1)):?>
     <a href="<?php echo $link; ?>"
      class="btn btn-default TzReadmore<?php echo $params -> get('tz_use_lightbox', 1)?' fancybox fancybox.iframe':'';?>"
@@ -240,10 +242,7 @@ if(!isset($item -> mediatypes) || (isset($item -> mediatypes) && !in_array($item
     <?php if ($this->item->state == 0) : ?>
     </div>
     <?php endif; ?>
-
-
-
-    <div class="item-separator"></div>
+    
 <?php endif;
 endif;
 // End Description and some info

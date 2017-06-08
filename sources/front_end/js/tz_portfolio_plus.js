@@ -83,10 +83,12 @@
         var $params = $var.params,
             $isotope_options    = $var.isotope_options;
 
+
+
         switch($params.orderby_sec){
             default:
                 $isotope_options.core.sortBy        = 'original-order';
-                $isotope_options.core.sortAscending = false;
+                $isotope_options.core.sortAscending = true;
                 break;
             case 'date':
                 $isotope_options.core.sortBy        = 'date';
@@ -123,6 +125,10 @@
                 $isotope_options.core.sortBy        = 'hits';
                 $isotope_options.core.sortAscending = true;
                 break;
+        }
+
+        if(options.isotope_options && options.isotope_options.core && options.isotope_options.core.sortAscending != "undefined"){
+            $isotope_options.core.sortAscending  = options.isotope_options.core.sortAscending;
         }
 
         if(!$isotope_options.core.layoutMode.length){
@@ -340,7 +346,6 @@
         $(window).smartresize(function(){
             $tzppIsotope.tz_init();
         });
-        //$(window).smartresize();
 
         return this;
     };
