@@ -1,6 +1,0 @@
-Change logs for tzportfolio plus v1.0.7
-
-1. Fix error Layout default_extrafields not found in view users.
-2. Fix error placeholder for text and textarea search addons.
-3. Added parameters from extrafields for article and category edit form if extrafield support xml files.
-4. Fix error addon_task submit.

@@ -1,0 +1,43 @@
+{
+    "config": {
+        "topBanner": [
+            "/**",
+            "*------------------------------------------------------------------------------",
+            "* @package Plazart Framework for Joomla!",
+            "*------------------------------------------------------------------------------",
+            "* @copyright Copyright (C) 2012-2013 TemPlaza.com. All Rights Reserved.",
+            "* @license GNU General Public License version 2 or later; see LICENSE.txt",
+            "* @authors TemPlaza",
+            "* @Link: http://templaza.com",
+            "*------------------------------------------------------------------------------",
+            "*/"
+        ],
+        "autoprefixerBrowsers": [
+            "Android 2.3",
+            "Android >= 4",
+            "Chrome >= 20",
+            "Firefox >= 24",
+            "Explorer >= 8",
+            "iOS >= 6",
+            "Opera >= 12",
+            "Safari >= 6"
+        ],
+        "tp_core_admin": ["../administrator/components/com_tz_portfolio_plus"],
+        "tp_s_core_admin_css": ["tz_portfolio_plus_sources/back_end/css"],
+        "tp_core_admin_css": ["../administrator/components/com_tz_portfolio_plus/css"],
+        "tp_s_core_admin_js": ["tz_portfolio_plus_sources/back_end/js"],
+        "tp_core_admin_js": ["../administrator/components/com_tz_portfolio_plus/js"],
+        "tp_core_less": ["tz_portfolio_plus_sources/front_end/less/core"],
+        "tp_core_css": ["../components/com_tz_portfolio_plus/css"],
+        "tp_core_source_css": ["tz_portfolio_plus_sources/front_end/css"],
+        "tp_core_source_js": ["tz_portfolio_plus_sources/front_end/js"],
+        "tp_core_js": ["../components/com_tz_portfolio_plus/js"],
+        "tp_tpl_elegant_less": ["tz_portfolio_plus_sources/front_end/less/templates/elegant"],
+        "tp_tpl_elegant_css": ["../components/com_tz_portfolio_plus/templates/elegant/css"],
+        "tp_output_css": ["tz_portfolio_plus_sources/front_end/css"],
+        "tp_addon_music_less": ["../components/com_tz_portfolio_plus/addons/content/music/less"],
+        "tp_addon_music_css": ["../components/com_tz_portfolio_plus/addons/content/music/css"],
+        "tp_addon_source": ["tz_portfolio_plus_sources/front_end/addons"],
+        "tp_addon": ["../components/com_tz_portfolio_plus/addons"]
+    }
+}

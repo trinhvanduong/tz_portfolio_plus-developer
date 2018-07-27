@@ -10,6 +10,14 @@ Demo: http://demo.tzportfolio.com/
 
 *** Changelog ***
 
+27/07/2018 - 2.0.0
+
+	- Added file style-j4.css in back-end (modified style.css file to change styles for comparetible with Joomla 4).
+	- Added file layout-admin-j4.js in back-end (modified layout-admin.js to change script layout builder).
+	- Added css files of notification on front-end: ns-default.css, ns-style-attached.css, ns-style-bar.css, ns-style-growl.css and ns-style-other.css
+	- Added core.js file on front-end (add object TZ_Portfolio_Plus to register functions ajaxscrollcomplete,...);
+	- Added file tz_portfolio_plus-j4.js for front-end (modified of tz_portfolio_plus.js) to call functions at ajaxscrollcomplete;
+
 11/08/2017 - 1.0.7
 
 	- Fix error Layout default_extrafields not found in view users.

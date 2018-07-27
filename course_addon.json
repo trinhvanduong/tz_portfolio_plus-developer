@@ -1,0 +1,18 @@
+{
+  "config": {
+    "topBanner": [
+      "/*------------------------------------------------------------------------",
+      "# Course Add-On",
+      "# ------------------------------------------------------------------------",
+      "# Author:    DuongTVTemPlaza",
+      "# Copyright: Copyright (C) 2011-2017 tzportfolio.com. All Rights Reserved.",
+      "# @License - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL",
+      "# Website: http://www.tzportfolio.com",
+      "# Technical Support:  Forum - http://tzportfolio.com/forum",
+      "# Family website: http://www.templaza.com",
+      "-------------------------------------------------------------------------*/"
+    ],
+    "tp_addon_less": ["tz_portfolio_plus_sources/front_end/less/addons/course"],
+    "tp_addon_css": ["../components/com_tz_portfolio_plus/addons/content/course/css/"]
+  }
+}

@@ -1,0 +1,61 @@
+@import "../variables";
+@import "../mixins";
+
+.tp-course__teacher{
+  > .tp-course__heading{
+    margin-bottom: 20px;
+  }
+  .social{
+    margin-bottom: 5px;
+    > *{
+      margin-right: 5px;
+    }
+  }
+  .description{
+    margin-top: 10px;
+    //color: @description-color;
+  }
+  .list-inline{
+    margin: 0;
+    list-style: none;
+    > li{
+      padding-right: 5px;
+      display: inline-block;
+    }
+  }
+}
+.tp-course__muted{
+  color: @description-color;
+}
+.tp-course__media{
+  width: 100%;
+  display: table;
+  .media-heading{
+    margin-top: 0;
+  }
+  .media-left{
+    display: table-cell;
+    .tp-course__teacher &{
+      width: 80px;
+      height: 80px;
+      overflow: hidden;
+      position: relative;
+    }
+  }
+  .media-body{
+    padding-left: 15px;
+    display: table-cell;
+  }
+  .centered{
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    .transform(translate(50%, 50%));
+    .media-object{
+      max-width: 200%;
+      .transform(translate(-50%, -50%));
+    }
+  }
+}

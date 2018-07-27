@@ -201,6 +201,11 @@ body {
     border: 1px solid #ebebeb;
     border-radius: 3px
 }
+.tpContainer:after {
+    content: "";
+    clear: both;
+    display: block;
+}
 
 .tpContainer .table{
     margin-bottom: 10px;
@@ -454,7 +459,7 @@ body {
     border-bottom: 1px solid #ebebeb;
 }
 /*.tp-media__main{*/
-    /*padding-left: 195px;*/
+/*padding-left: 195px;*/
 /*}*/
 .tp-media__browse{
     top: 0;
@@ -536,7 +541,7 @@ body {
 .tp-media__browse-info .details{
     float: left;
 }
- .tp-media__browse-title{
+.tp-media__browse-title{
     color: #666;
     font-size: 12px;
     text-transform: uppercase;
@@ -551,7 +556,7 @@ body {
     border-top: 1px solid #ebebeb;
 }
 /*.tp-media__list .selected .media-modal-icon-minus {*/
-    /*display: inherit;*/
+/*display: inherit;*/
 /*}*/
 /*#3071A9*/
 /* End styles for media view */
@@ -603,11 +608,13 @@ body {
     display: flex;
     flex-wrap: wrap;
     margin: 0 -10px;
+    flex-direction: row;
 }
-.tpp-extension__flexbox .col{
+.tpp-extension__flexbox .tpp-extension__col{
     display: flex;
     width: 33.3333%;
     margin-bottom: 20px;
+    flex-basis: 1;
     /*padding-bottom: 60px;*/
 }
 .tpp-extension__flexbox .tpp-extension__item{
@@ -620,14 +627,11 @@ body {
     /*padding-bottom: 15px;*/
 }
 .tpp-extension__flexbox .tpp-extension__item .bottom{
-    /*left: 20px;*/
-    /*right: 20px;*/
-    /*bottom: 10px;*/
-    /*position: absolute;*/
     clear: both;
     width: 100%;
     margin: 0 -20px;
     align-self: flex-end;
+    box-sizing: content-box;
 }
 .tpp-extension__list{
     margin-top: 25px;
@@ -699,11 +703,11 @@ body {
     border-top: 1px solid #ebebeb;
 }
 /*.tpp-extension__item .updated{*/
-    /*float: right;*/
-    /*text-align: right;*/
+/*float: right;*/
+/*text-align: right;*/
 /*}*/
 /*.tpp-extension__item .updated > ul{*/
-    /*margin: 0;*/
+/*margin: 0;*/
 /*}*/
 .tpp-extension__item .bottom > .unstyled > li{
     margin-bottom: 5px;
@@ -714,13 +718,6 @@ body {
 .tpp-extension__item .bottom > ul span{
     font-weight: normal;
 }
-/*.tpp-extension__item .version{*/
-    /*float: left;*/
-    /*font-weight: bold;*/
-/*}*/
-/*.tpp-extension__item .version > span{*/
-    /*font-weight: normal;*/
-/*}*/
 .tpp-extension__btn-collapse{
     margin-right: 10px;
 }
@@ -745,11 +742,34 @@ form#field-form #jform_value{
     z-index: 1;
     position: relative;
 }
-/*.card.tpp-card-transparent{*/
-    /*border: none;*/
-    /*background-color: transparent;*/
-/*}*/
-/*.tpp-card-transparent .card-body{*/
-    /*padding: 0;*/
-/*}*/
+.btn[data-target="#tpp-addon__upload"]{
+    margin-right: 10px;
+}
+.row .tpp-extension__upload .btn[data-target="#tpp-addon__upload"],
+.row .tpp-extension__upload .btn[data-target="#tpp-template__upload"]{
+    z-index: 1;
+    margin: 8px 10px 0;
+    position: relative;
+}
+.row .tpp-extension__flexbox{
+    margin-left: 0;
+    margin-right: 0;
+}
+.tpp-extension__upload-form{
+    background: #fff;
+}
+.tpp-extension__upload-form.in,
+.row .tpp-extension__upload-form{
+    margin-top: 20px;
+    padding: 15px 10px 0px;
+    border: 1px solid #ebebeb;
+}
+.row .tpp-extension__upload-form{
+    margin-left: 10px;
+    margin-right: 10px;
+    background: #f8f8f8;
+}
+.row .nowrap{
+    white-space: nowrap;
+}
 /* End styles for Joomla 4 */

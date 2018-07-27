@@ -1,7 +1,15 @@
 //Sort
 
-(function($, window){
+(function($, window, TZ_Portfolio_Plus){
     'use strict';
+
+    // ajaxCompletes array with value is the function
+    TZ_Portfolio_Plus.infiniteScroll  = {
+        "addAjaxComplete": function(func){
+            this.ajaxCompletes.push(func);
+        }
+        ,"ajaxCompletes": []
+    }
 
     function tzSortFilter(srcObj, desObj, order) {
         if ((!order || order == 'auto')
@@ -26,50 +34,6 @@
         });
         return true;
     }
-
-    // function ajaxComments($element, itemid, text, link) {
-    //     if ($element.length) {
-    //         if ($element.find('.name a').length) {
-    //             var url = 'index.php?option=com_tz_portfolio_plus&task=portfolio.ajaxcomments',
-    //                 $href = [],
-    //                 $articleId = [];
-    //             if (link) {
-    //                 url = link;
-    //             }
-    //             $element.map(function (index, obj) {
-    //                 if (jQuery(obj).find('.name a').length) {
-    //                     if (jQuery(obj).find('.name a').attr('href').length) {
-    //                         $href.push(jQuery(obj).find('.name a').attr('href'));
-    //                         if (jQuery(obj).attr('id')) {
-    //                             $articleId.push(jQuery(obj).attr('id'));
-    //                         }
-    //                     }
-    //                 }
-    //             });
-    //
-    //             jQuery.ajax({
-    //                 type: 'post',
-    //                 url: url,
-    //                 data: {
-    //                     Itemid: itemid,
-    //                     url: window.Base64.encode(window.JSON.encode($href)),
-    //                     id: window.Base64.encode(window.JSON.encode($articleId))
-    //                 }
-    //             }).success(function (data) {
-    //                 if (data && data.length) {
-    //                     var $comment = window.JSON.decode(data);
-    //                     if (typeof $comment == 'object') {
-    //                         jQuery.each($comment, function (key, value) {
-    //                             if (jQuery('#' + key).find('.TzPortfolioCommentCount').length) {
-    //                                 jQuery('#' + key).find('.TzPortfolioCommentCount').html(text + '<span>' + value + '</span>');
-    //                             }
-    //                         });
-    //                     }
-    //                 }
-    //             });
-    //         }
-    //     }
-    // }
 
     $.tzPortfolioPlusIsotope  = function(el,options){
 
@@ -292,7 +256,7 @@
                     // otherwise, apply new options
                     if(value == 'name'){
                         if($params.orderby_sec == 'alpha' || ($params.orderby_sec != 'alpha'
-                                && $params.orderby_sec != 'ralpha')){
+                            && $params.orderby_sec != 'ralpha')){
                             options.sortAscending    = true;
                         }else{
                             if($params.orderby_sec == 'ralpha'){
@@ -387,11 +351,12 @@
                     },
                     hits: function ($elem) {
                         var number = ($elem.hasClass('element') && $elem.attr('data-hits').length) ?
-                            $elem.attr('data-hits') : $elem.find('.hits').text();
+                            $elem.attr('data-hits') : $elem.find('.hits,.tpp-item-hit').text();
                         return parseInt(number,10);
                     },
                     name: function ($elem) {
-                        var name = ($elem.hasClass('element') && $elem.find('.TzPortfolioTitle.name').length)?$elem.find('.TzPortfolioTitle.name').text().trim():
+                        var name = ($elem.hasClass('element') && $elem.find('.TzPortfolioTitle.name,.tpp-item-title.name')
+                                .length)?$elem.find('.TzPortfolioTitle.name, .tpp-item-title.name').text().trim():
                             (($elem.attr('data-title').length)?$elem.attr('data-title'):''),
                             itemText = name.length ? name : $elem.text().trim();
                         return itemText;
@@ -659,6 +624,15 @@
                             //move item-more to the end
                             $('div#tz_append').find('a:first').show();
                         }
+
+                        // Call functions ajaxComplete added
+                        if(TZ_Portfolio_Plus.infiniteScroll.ajaxCompletes.length){
+                            $.each(TZ_Portfolio_Plus.infiniteScroll.ajaxCompletes, function(index, func){
+                                if(typeof func === 'function') {
+                                    func($newElems, $tzppIsotope);
+                                }
+                            });
+                        }
                     });
                 }
             }
@@ -693,25 +667,6 @@
         }
     };
 
-    //var tz = $.tzPortfolioPlusInfiniteScroll.ajaxLoadComplete = $.extend(true,function($element){
-    //    if(tz.data.length){
-    //        tz.data.each(function(fn, value){
-    //            if(typeof fn == 'function'){
-    //                // Call function
-    //                fn();
-    //            }
-    //        });
-    //    }
-    //}, {
-    //    data: []
-    //});
-    //
-    //$.tzPortfolioPlusInfiniteScroll.addCompleteFunction  = function(fn){
-    //    if(fn && typeof fn){
-    //        tz.data.push(fn);
-    //    }
-    //};
-
     // Create options object
     $.tzPortfolioPlusInfiniteScroll.defaults  = {
         rootPath        : '',
@@ -735,12 +690,12 @@
         if(options === undefined) options   = {};
         if(typeof options === 'object'){
             // Call function
-            return this.each(function() {
-                // Call function
-                new $.tzPortfolioPlusInfiniteScroll(this,options);
-            });
-            //return new $.tzPortfolioPlusInfiniteScroll(this,options);
+            if ($(this).data("tzPortfolioPlusInfiniteScroll") === undefined) {
+                new $.tzPortfolioPlusInfiniteScroll(this, options);
+            }else{
+                $(this).data('tzPortfolioPlusInfiniteScroll');
+            }
         }
     }
 
-})(jQuery,window);
+})(jQuery,window,TZ_Portfolio_Plus);
