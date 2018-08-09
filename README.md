@@ -10,6 +10,10 @@ Demo: http://demo.tzportfolio.com/
 
 *** Changelog ***
 
+09/08/2018 - 2.0.3
+
+	- Update style for message box of free version at file style-j4.css in back-end.
+
 27/07/2018 - 2.0.0
 
 	- Added file style-j4.css in back-end (modified style.css file to change styles for comparetible with Joomla 4).
