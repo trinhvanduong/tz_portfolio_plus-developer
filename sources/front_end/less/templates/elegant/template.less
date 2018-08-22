@@ -70,38 +70,72 @@
       }
     }
   }
-  .tpBody{
-    .tpVote{
-      display: block;
-      line-height: 1;
-      vertical-align: middle;
-      margin-top: 15px;
-      .content_rating{
-        a.rating-item {
-          color: @star_color;
-        }
-        .rating > .voted {
-          &:before{
-            color: @star_color;
-          }
-          span{
-            left: 0;
-            right: auto;
-            direction: ltr;
-          }
-        }
-        .rating > .rating-item:hover span::before, .rating > .rating-item:hover ~ a span::before,
-        .rating > .rating-item:hover::before, .rating > .rating-item:hover ~ .rating-item::before
-        {
-          content: "\f005";
-          color: @star_color;
-        }
-        .TzVote-count{
-          font-size: 100%;
-          vertical-align: text-top;
+  .tpVote{
+    display: block;
+    line-height: 1;
+    vertical-align: middle;
+    margin-top: 15px;
+    .content_rating{
+      a.rating-item {
+        color: @star_color;
+        &:hover{
+          text-decoration: none;
         }
       }
+      .rating > .voted {
+        &:before{
+          color: @star_color;
+        }
+        span{
+          left: 0;
+          right: auto;
+          direction: ltr;
+        }
+      }
+      .rating > .rating-item:hover span::before, .rating > .rating-item:hover ~ a span::before,
+      .rating > .rating-item:hover::before, .rating > .rating-item:hover ~ .rating-item::before
+      {
+        content: "\f005";
+        color: @star_color;
+      }
+      .TzVote-count{
+        font-size: 100%;
+        vertical-align: text-top;
+      }
     }
+  }
+  .tpBody{
+    //.tpVote{
+    //  display: block;
+    //  line-height: 1;
+    //  vertical-align: middle;
+    //  margin-top: 15px;
+    //  .content_rating{
+    //    a.rating-item {
+    //      color: @star_color;
+    //    }
+    //    .rating > .voted {
+    //      &:before{
+    //        color: @star_color;
+    //      }
+    //      span{
+    //        left: 0;
+    //        right: auto;
+    //        direction: ltr;
+    //      }
+    //    }
+    //    .rating > .rating-item:hover span::before, .rating > .rating-item:hover ~ a span::before,
+    //    .rating > .rating-item:hover::before, .rating > .rating-item:hover ~ .rating-item::before
+    //    {
+    //      content: "\f005";
+    //      color: @star_color;
+    //    }
+    //    .TzVote-count{
+    //      font-size: 100%;
+    //      vertical-align: text-top;
+    //    }
+    //  }
+    //}
     .tpAttachment{
       border: 1px solid @border-base;
       border-radius: 3px;
