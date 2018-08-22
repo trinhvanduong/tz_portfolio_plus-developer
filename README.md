@@ -10,6 +10,10 @@ Demo: http://demo.tzportfolio.com/
 
 *** Changelog ***
 
+22/08/2018 - 2.0.4
+
+	- Add styles in file front_end\less\core\import\tzportfolioplus.less
+
 09/08/2018 - 2.0.3
 
 	- Update style for message box of free version at file style-j4.css in back-end.
