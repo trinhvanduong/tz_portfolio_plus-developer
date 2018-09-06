@@ -10,6 +10,10 @@ Demo: http://demo.tzportfolio.com/
 
 *** Changelog ***
 
+06/09/2018 - 2.0.5
+
+	- Add styles in file front_end\less\core\import\tzportfolioplus.less
+
 22/08/2018 - 2.0.4
 
 	- Add styles in file front_end\less\core\import\tzportfolioplus.less
