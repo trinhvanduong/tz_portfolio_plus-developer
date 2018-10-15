@@ -740,7 +740,7 @@ body {
 }
 form#field-form #jform_value{
     z-index: 1;
-    position: relative;
+    /*position: relative;*/
 }
 .btn[data-target="#tpp-addon__upload"]{
     margin-right: 10px;

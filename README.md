@@ -10,6 +10,10 @@ Demo: http://demo.tzportfolio.com/
 
 *** Changelog ***
 
+15/10/2018 - 2.0.7
+
+	- Modify styles in file back_end\css\style-j4.css
+
 06/09/2018 - 2.0.5
 
 	- Add styles in file front_end\less\core\import\tzportfolioplus.less
