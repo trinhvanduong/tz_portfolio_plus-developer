@@ -1,0 +1,46 @@
+.tpp-myarticles-page{
+  tbody>tr td{
+    .title{
+      color: #000;
+      font-weight: 700;
+    }
+    .meta{
+      color: #888;
+      a {
+        color: #888;
+      }
+    }
+    &:hover{
+      .tpp-myarticles__actions{
+        //text-indent: 0;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+  .tpp-myarticles__actions{
+    font-size: 12px;
+    list-style: none;
+    margin: 8px 0 0 0;
+    //text-indent: -9999px;
+    opacity: 0;
+    visibility: hidden;
+    .transition(opacity 0.35s ease-in-out);
+    a:hover{
+      text-decoration: none;
+    }
+    > li {
+      display: inline-block;
+      + li:before{
+        content: "-";
+        padding: 0 4px;
+      }
+    }
+    .text-danger{
+      color: #f00;
+      &:hover {
+        color: #e00000;
+      }
+    }
+  }
+}

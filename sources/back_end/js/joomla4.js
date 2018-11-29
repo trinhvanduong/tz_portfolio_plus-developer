@@ -1,4 +1,4 @@
-(function ($) {
+(function (document) {
     "use strict";
     document.addEventListener('DOMContentLoaded', function() {
         var btngroups   = document.querySelectorAll(".btn-group.switcher");
@@ -6,4 +6,4 @@
             btngroups[i].classList.remove("btn-group");
         }
     });
-})(jQuery);
+})(document);
