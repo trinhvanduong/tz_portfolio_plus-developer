@@ -75,6 +75,35 @@
     transform: rotate(359deg);
   }
 }
+.tzpp_bootstrap3 {
+  margin: 0 -15px;
+}
+.inline-style > .container-fluid > .row > div {
+  display: inline-block;
+  width: auto;
+  float: none;
+}
+.tpExtraFields .tp_extrafield-item {
+  padding: 5px 8px;
+}
+.tpExtraFields .tp_extrafield-item:before,
+.tpExtraFields .tp_extrafield-item:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  content: " ";
+  display: table;
+}
+.tpExtraFields .tp_extrafield-item:after {
+  clear: both;
+}
+.tpExtraFields .tp_extrafield-item > div {
+  padding: 5px 0;
+}
+.tpExtraFields .tp_extrafield-label {
+  display: inline-block;
+  font-weight: bold;
+}
 .TzPagination {
   text-align: center;
 }
