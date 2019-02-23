@@ -10,6 +10,12 @@ Demo: http://demo.tzportfolio.com/
 
 *** Changelog ***
 
+23/02/2019 - 2.1.4
+
+	- Override awesome font v5.2.7 with "fa" to "tp" prefix.
+	- Change style of file admin-layout in back-end.
+	- Added gulp file.
+
 03/12/2018 - 2.0.9
 
 	- Fix error style of extrafield on front-end of version 2.0.8 at file front_end\less\core\import\tzportfolioplus.less
