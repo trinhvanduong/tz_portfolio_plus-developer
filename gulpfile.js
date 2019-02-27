@@ -7,6 +7,8 @@ var path = require('path');
 var cssmin = require('gulp-cssmin');
 var rename = require('gulp-rename');
 
+var sourcemaps = require('gulp-sourcemaps');
+
 gulp.task('less', function () {
     return gulp.src('tz_portfolio_plus_sources/front_end/less/core/tzportfolioplus.less')
         .pipe(less({
@@ -60,6 +62,17 @@ gulp.task('less-template-elegant', function () {
         .pipe(rename({suffix: ''}))
         .pipe(gulp.dest('../components/com_tz_portfolio_plus/templates/elegant/css'));
 });
+gulp.task('less-module-articles', function () {
+    return gulp.src('../modules/mod_tz_portfolio_plus_articles/css/style.less')
+        .pipe(sourcemaps.init())
+        .pipe(less({
+            paths: [ path.join(__dirname, 'less', 'includes') ]
+        }))
+        .pipe(sourcemaps.write())
+        // .pipe(cssmin())
+        .pipe(rename({suffix: ''}))
+        .pipe(gulp.dest('../modules/mod_tz_portfolio_plus_articles/css'));
+});
 
 
 gulp.task('cssmin-admin-layout', function () {
@@ -72,9 +85,19 @@ gulp.task('cssmin-admin-layout', function () {
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('../administrator/components/com_tz_portfolio_plus/css'));
 });
+gulp.task('cssmin-tz_portfolio', function () {
+    return gulp.src('tz_portfolio_plus_sources/back_end/css/tz_portfolio.css')
+        .pipe(less({
+            paths: [ path.join(__dirname, 'less', 'includes') ]
+        }))
+        .pipe(gulp.dest('tz_portfolio_plus_sources/back_end/dist'))
+        .pipe(cssmin())
+        .pipe(rename({basename: 'tz_portfolio_plus', suffix: '.min'}))
+        .pipe(gulp.dest('../administrator/components/com_tz_portfolio_plus/css'));
+});
 
-var uglify = require('gulp-uglify');
-var pump = require('pump');
+// var uglify = require('gulp-uglify');
+// var pump = require('pump');
 
 // gulp.task('js-uglify', function (cb) {
 //     pump([

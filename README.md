@@ -10,6 +10,12 @@ Demo: http://demo.tzportfolio.com/
 
 *** Changelog ***
 
+27/02/2019 - 2.1.5
+
+	- Update file back_end\less\style.less.
+	- Update file front_end\less\core\import\tzportfolioplus.less.
+	- Update file front_end\less\templates\elegant\template.less.
+
 23/02/2019 - 2.1.4
 
 	- Override awesome font v5.2.7 with "fa" to "tp" prefix.

@@ -422,6 +422,12 @@ div#infscr-loading img {
 .tpp-tag-about .title {
   display: inline-block;
 }
+.tp-edit-page select {
+  min-width: 200px;
+}
+.tp-edit-page .nav.nav-tabs a[data-toggle=tab] {
+  display: block !important;
+}
 .tz_extrafield-item,
 .tpp-extrafield__item {
   list-style: none;

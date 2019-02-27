@@ -35,3 +35,9 @@
 .tz_chzn-choices .dropdown-menu > .active > a:focus{
     color: #fff;
 }
+.tp-edit-page select {
+    min-width: 200px;
+}
+.tp-edit-page .nav.nav-tabs a[data-toggle=tab] {
+    display: block !important;
+}

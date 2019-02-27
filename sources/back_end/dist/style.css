@@ -678,8 +678,14 @@ body {
 .tpp-extension__item .action-links .btn {
   font-size: 12px;
 }
-.tpp-extension__item .action-links .icon-loop {
+.tpp-extension__item .text-update {
   color: #e18114;
+}
+.tpp-extension__item .action-links .loading > * {
+  line-height: 11px;
+}
+.tpp-extension__item .action-links .installed > * {
+  color: #46a546;
 }
 .tpp-extension__item .bottom {
   font-weight: bold;
@@ -796,6 +802,44 @@ form#field-form #jform_value {
 }
 .tpp-upgrade-pro p {
   margin-bottom: 0;
+}
+@media (max-width: 1366px) {
+  .tpp-extension__flexbox .tpp-extension__col {
+    width: 50%;
+  }
+}
+@media (max-width: 992px) {
+  .tpp-extension__flexbox .tpp-extension__col {
+    width: 100%;
+  }
+}
+@media (max-width: 576px) {
+  .tpp-extension__flexbox .tpp-extension__col {
+    width: 100%;
+  }
+  .tpp-extension__item .title {
+    margin: 0 0 20px;
+  }
+  .tpp-extension__item .title img {
+    width: auto;
+    margin: 10px 0 0;
+    position: relative;
+  }
+  .tpp-extension__item .action-links {
+    width: auto;
+    position: relative;
+  }
+  .tpp-extension__item .action-links > ul {
+    float: none;
+    text-align: center;
+  }
+  .tpp-extension__item .action-links > ul > li {
+    margin: 0 4px 12px;
+    display: inline-block;
+  }
+  .tpp-extension__item .desc {
+    margin: 0;
+  }
 }
 /* End styles for Joomla 4 */
 [data-tpp-dialog-modal] .modal-body {
