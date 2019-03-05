@@ -10,6 +10,10 @@ Demo: http://demo.tzportfolio.com/
 
 *** Changelog ***
 
+05/03/2019 - 2.1.6
+
+	- Added js file: back_end/js/tpp-field-permissions.js
+
 27/02/2019 - 2.1.5
 
 	- Update file back_end\less\style.less.

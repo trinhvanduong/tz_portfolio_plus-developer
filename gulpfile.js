@@ -111,7 +111,7 @@ gulp.task('cssmin-tz_portfolio', function () {
 //     );
 // });
 
-const minify = require('gulp-minify');
+var minify = require('gulp-minify');
 gulp.task('js-minify', function() {
     gulp.src(['tz_portfolio_plus_sources/front_end/js/core.js', 'tz_portfolio_plus_sources/front_end/js/tz_portfolio_plus-j4.js'])
         .pipe(minify({
@@ -123,3 +123,18 @@ gulp.task('js-minify', function() {
         }))
         .pipe(gulp.dest('tz_portfolio_plus_sources/front_end/dist'))
 });
+gulp.task('js-minify__back-end', function() {
+    gulp.src(['tz_portfolio_plus_sources/back_end/js/tpp-field-permissions.js'])
+        .pipe(minify({
+            ext:{
+                src:'.js',
+                min:'.min.js'
+            },
+            exclude: ['tasks']
+        }))
+        .pipe(gulp.dest('tz_portfolio_plus_sources/back_end/dist'))
+});
+
+// var gulp = require('gulp');
+// var uglify = require('gulp-uglify');
+// var pipeline = require('readable-stream').pipeline;
