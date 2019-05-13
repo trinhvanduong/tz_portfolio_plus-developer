@@ -343,11 +343,13 @@
         };
 
         $tzppIsotope.afterLoadPortfolio = function () {
-            var index   =   $tppUtility.readCookie('tppLatestItem');
-            if (index != null) {
-                if(!$tppUtility.lastClickAvailabled && $('#'+ index).length){
-                    $tppUtility.goToByScroll(index);
-                    $tppUtility.lastClickAvailabled  =   true;
+            if($var.params.remember_recent_article !== "undefined" && $var.params.remember_recent_article == 1) {
+                var index   =   $tppUtility.readCookie('tppLatestItem');
+                if (index != null) {
+                    if(!$tppUtility.lastClickAvailabled && $('#'+ index).length){
+                        $tppUtility.goToByScroll(index);
+                        $tppUtility.lastClickAvailabled  =   true;
+                    }
                 }
             }
         };

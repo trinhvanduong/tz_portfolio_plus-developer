@@ -1,5 +1,9 @@
+/*!
+ * Font Awesome Free 5.8.2 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
 @font-face {
-  font-family: 'tpFontAwesome 5 Free';
+  font-family: 'tpFont Awesome 5 Free';
   font-style: normal;
   font-weight: 900;
   font-display: auto;
@@ -8,9 +12,13 @@
 }
 .tp,
 .tps {
-  font-family: 'tpFontAwesome 5 Free';
+  font-family: 'tpFont Awesome 5 Free';
   font-weight: 900;
 }
+/*!
+ * Font Awesome Free 5.8.2 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
 @font-face {
   font-family: 'tpFontAwesome 5 Free';
   font-style: normal;
@@ -23,8 +31,12 @@
   font-family: 'tpFontAwesome 5 Free';
   font-weight: 400;
 }
+/*!
+ * Font Awesome Free 5.8.2 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
 @font-face {
-  font-family: 'tpFontAwesome 5 Brands';
+  font-family: 'tpFont Awesome 5 Brands';
   font-style: normal;
   font-weight: normal;
   font-display: auto;
@@ -32,8 +44,12 @@
   src: url('../fonts/fa-brands-400.eot?#iefix') format('embedded-opentype'), url('../fonts/fa-brands-400.woff2') format('woff2'), url('../fonts/fa-brands-400.woff') format('woff'), url('../fonts/fa-brands-400.ttf') format('truetype'), url('../fonts/fa-brands-400.svg#fontawesome') format('svg');
 }
 .tpb {
-  font-family: 'tpFontAwesome 5 Brands';
+  font-family: 'tpFont Awesome 5 Brands';
 }
+/*!
+ * Font Awesome Free 5.8.2 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
 .tp,
 .tps,
 .tpr,
@@ -134,12 +150,12 @@
   margin-left: 0.3em;
 }
 .tp-spin {
-  animation: tp-spin 2s infinite linear;
+  animation: fa-spin 2s infinite linear;
 }
 .tp-pulse {
-  animation: tp-spin 1s infinite steps(8);
+  animation: fa-spin 1s infinite steps(8);
 }
-@keyframes tp-spin {
+@keyframes fa-spin {
   0% {
     transform: rotate(0deg);
   }
@@ -244,6 +260,9 @@
 }
 .tp-air-freshener:before {
   content: "\f5d0";
+}
+.tp-airbnb:before {
+  content: "\f834";
 }
 .tp-algolia:before {
   content: "\f36c";
@@ -497,6 +516,9 @@
 .tp-battery-three-quarters:before {
   content: "\f241";
 }
+.tp-battle-net:before {
+  content: "\f835";
+}
 .tp-bed:before {
   content: "\f236";
 }
@@ -608,6 +630,9 @@
 .tp-bookmark:before {
   content: "\f02e";
 }
+.tp-bootstrap:before {
+  content: "\f836";
+}
 .tp-bowling-ball:before {
   content: "\f436";
 }
@@ -646,6 +671,9 @@
 }
 .tp-btc:before {
   content: "\f15a";
+}
+.tp-buffer:before {
+  content: "\f837";
 }
 .tp-bug:before {
   content: "\f188";
@@ -910,6 +938,9 @@
 }
 .tp-chrome:before {
   content: "\f268";
+}
+.tp-chromecast:before {
+  content: "\f838";
 }
 .tp-church:before {
   content: "\f51d";
@@ -1424,6 +1455,9 @@
 .tp-euro-sign:before {
   content: "\f153";
 }
+.tp-evernote:before {
+  content: "\f839";
+}
 .tp-exchange-alt:before {
   content: "\f362";
 }
@@ -1759,6 +1793,9 @@
 }
 .tp-git:before {
   content: "\f1d3";
+}
+.tp-git-alt:before {
+  content: "\f841";
 }
 .tp-git-square:before {
   content: "\f1d2";
@@ -2203,6 +2240,9 @@
 }
 .tp-italic:before {
   content: "\f033";
+}
+.tp-itch-io:before {
+  content: "\f83a";
 }
 .tp-itunes:before {
   content: "\f3b4";
@@ -3164,6 +3204,9 @@
 .tp-safari:before {
   content: "\f267";
 }
+.tp-salesforce:before {
+  content: "\f83b";
+}
 .tp-sass:before {
   content: "\f41e";
 }
@@ -3443,6 +3486,9 @@
 .tp-speakap:before {
   content: "\f3f3";
 }
+.tp-speaker-deck:before {
+  content: "\f83c";
+}
 .tp-spider:before {
   content: "\f717";
 }
@@ -3475,6 +3521,9 @@
 }
 .tp-stack-overflow:before {
   content: "\f16c";
+}
+.tp-stackpath:before {
+  content: "\f842";
 }
 .tp-stamp:before {
   content: "\f5bf";
@@ -3607,6 +3656,9 @@
 }
 .tp-swimming-pool:before {
   content: "\f5c5";
+}
+.tp-symfony:before {
+  content: "\f83d";
 }
 .tp-synagogue:before {
   content: "\f69b";
@@ -4115,6 +4167,12 @@
 .tp-water:before {
   content: "\f773";
 }
+.tp-wave-square:before {
+  content: "\f83e";
+}
+.tp-waze:before {
+  content: "\f83f";
+}
 .tp-weebly:before {
   content: "\f5cc";
 }
@@ -4225,6 +4283,9 @@
 }
 .tp-yahoo:before {
   content: "\f19e";
+}
+.tp-yammer:before {
+  content: "\f840";
 }
 .tp-yandex:before {
   content: "\f413";

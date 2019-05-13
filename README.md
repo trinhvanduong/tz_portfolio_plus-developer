@@ -10,6 +10,14 @@ Demo: http://demo.tzportfolio.com/
 
 *** Changelog ***
 
+13/05/2019 - 2.2.4
+
+	- Remove front_end/js/tz_portfolio_plus.js and change front_end/js/tz_portfolio_plus-j4.js to front_end/js/tz_portfolio_plus.js
+	- Update back_end/less/style.less
+	- Update front_end/js/tz_portfolio_plus.js
+	- Update front_end/less/core/fonts/fontawesome-free-5.8.2
+	- Added js file: back_end/js/introguide.js
+
 05/03/2019 - 2.1.6
 
 	- Added js file: back_end/js/tpp-field-permissions.js

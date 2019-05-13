@@ -1,7 +1,15 @@
 //Sort
 
-(function($, window){
+(function($, window, TZ_Portfolio_Plus){
     'use strict';
+
+    // ajaxCompletes array with value is the function
+    TZ_Portfolio_Plus.infiniteScroll  = {
+        "addAjaxComplete": function(func){
+            this.ajaxCompletes.push(func);
+        }
+        ,"ajaxCompletes": []
+    }
 
     function tzSortFilter(srcObj, desObj, order) {
         if ((!order || order == 'auto')
@@ -27,49 +35,43 @@
         return true;
     }
 
-    // function ajaxComments($element, itemid, text, link) {
-    //     if ($element.length) {
-    //         if ($element.find('.name a').length) {
-    //             var url = 'index.php?option=com_tz_portfolio_plus&task=portfolio.ajaxcomments',
-    //                 $href = [],
-    //                 $articleId = [];
-    //             if (link) {
-    //                 url = link;
-    //             }
-    //             $element.map(function (index, obj) {
-    //                 if (jQuery(obj).find('.name a').length) {
-    //                     if (jQuery(obj).find('.name a').attr('href').length) {
-    //                         $href.push(jQuery(obj).find('.name a').attr('href'));
-    //                         if (jQuery(obj).attr('id')) {
-    //                             $articleId.push(jQuery(obj).attr('id'));
-    //                         }
-    //                     }
-    //                 }
-    //             });
-    //
-    //             jQuery.ajax({
-    //                 type: 'post',
-    //                 url: url,
-    //                 data: {
-    //                     Itemid: itemid,
-    //                     url: window.Base64.encode(window.JSON.encode($href)),
-    //                     id: window.Base64.encode(window.JSON.encode($articleId))
-    //                 }
-    //             }).success(function (data) {
-    //                 if (data && data.length) {
-    //                     var $comment = window.JSON.decode(data);
-    //                     if (typeof $comment == 'object') {
-    //                         jQuery.each($comment, function (key, value) {
-    //                             if (jQuery('#' + key).find('.TzPortfolioCommentCount').length) {
-    //                                 jQuery('#' + key).find('.TzPortfolioCommentCount').html(text + '<span>' + value + '</span>');
-    //                             }
-    //                         });
-    //                     }
-    //                 }
-    //             });
-    //         }
-    //     }
-    // }
+    var $tppUtility =   {};
+
+    $tppUtility.lastClickAvailabled  =   false;
+
+    $tppUtility.createCookie = function (name, value, days) {
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+        }
+        else var expires = "";
+        document.cookie = name+"="+value+expires+"; path=/";
+    };
+
+    $tppUtility.readCookie = function (name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    };
+
+    $tppUtility.eraseCookie = function (name) {
+        createCookie(name,"",-1);
+    };
+
+    $tppUtility.goToByScroll = function(id) {
+        // Remove "link" from the ID
+        // id = id.replace("link", "");
+        // Scroll
+        $('html,body').animate({
+            scrollTop: $("#" + id).offset().top
+        }, 'slow');
+    };
 
     $.tzPortfolioPlusIsotope  = function(el,options){
 
@@ -255,6 +257,7 @@
                         }
                     }
                     $isotope_options.complete();
+                    $tzppIsotope.afterLoadPortfolio();
                 });
             });
         };
@@ -265,6 +268,7 @@
                 $optionLinks = $optionSets.find($isotope_options.tagFilter);
             var $r_options    = null,
                 $container_options=$isotope_options.core;
+
             $optionLinks.click(function(event){
                 event.preventDefault();
                 var $isotope_this = $(this);
@@ -292,7 +296,7 @@
                     // otherwise, apply new options
                     if(value == 'name'){
                         if($params.orderby_sec == 'alpha' || ($params.orderby_sec != 'alpha'
-                                && $params.orderby_sec != 'ralpha')){
+                            && $params.orderby_sec != 'ralpha')){
                             options.sortAscending    = true;
                         }else{
                             if($params.orderby_sec == 'ralpha'){
@@ -331,13 +335,32 @@
             });
         };
 
+        $tzppIsotope.triggerOnClickItem = function () {
+            $($isotope_options.core.itemSelector).find('a').click(function (event) {
+                // event.preventDefault();
+                $tppUtility.createCookie('tppLatestItem', $(this).closest($isotope_options.core.itemSelector).attr('id'), 0.5);
+            });
+        };
+
+        $tzppIsotope.afterLoadPortfolio = function () {
+            if($var.params.remember_recent_article !== "undefined" && $var.params.remember_recent_article == 1) {
+                var index   =   $tppUtility.readCookie('tppLatestItem');
+                if (index != null) {
+                    if(!$tppUtility.lastClickAvailabled && $('#'+ index).length){
+                        $tppUtility.goToByScroll(index);
+                        $tppUtility.lastClickAvailabled  =   true;
+                    }
+                }
+            }
+        };
+
         // Call Function isotope ind document ready function
         $tzppIsotope.tz_init(true);
         $($isotope_options.filterSelector+'[data-option-key=sortBy]').children().removeClass('selected')
             .end().find('[data-option-value='+$isotope_options.core.sortBy + ']').addClass('selected');
 
         $tzppIsotope.loadPortfolio();
-
+        $tzppIsotope.triggerOnClickItem();
         $tzppIsotope.vars   = $var;
 
         $.data(el,"tzPortfolioPlusIsotope", $tzppIsotope);
@@ -387,11 +410,12 @@
                     },
                     hits: function ($elem) {
                         var number = ($elem.hasClass('element') && $elem.attr('data-hits').length) ?
-                            $elem.attr('data-hits') : $elem.find('.hits').text();
+                            $elem.attr('data-hits') : $elem.find('.hits,.tpp-item-hit').text();
                         return parseInt(number,10);
                     },
                     name: function ($elem) {
-                        var name = ($elem.hasClass('element') && $elem.find('.TzPortfolioTitle.name').length)?$elem.find('.TzPortfolioTitle.name').text().trim():
+                        var name = ($elem.hasClass('element') && $elem.find('.TzPortfolioTitle.name,.tpp-item-title.name')
+                                .length)?$elem.find('.TzPortfolioTitle.name, .tpp-item-title.name').text().trim():
                             (($elem.attr('data-title').length)?$elem.attr('data-title'):''),
                             itemText = name.length ? name : $elem.text().trim();
                         return itemText;
@@ -494,14 +518,21 @@
                 // appendCallback: false,
                 errorCallback: function() {
                     if(!$var.errorCallback) {
+                        $var.loadedText =   tzNoMorePageLoadText;
                         if (!$params.tz_portfolio_plus_layout || $params.tz_portfolio_plus_layout == 'ajaxButton') {
                             $('#tz_append a').unbind('click').html($var.loadedText).show();
                         }
-                        if ($params.tz_portfolio_plus_layout == 'ajaxInfiScroll') {
-                            $('#tz_append').removeAttr('style').html('<a class="tzNomore">' + $var.loadedText + '</a>');
+
+                        if (tzDisplayNoMorePageLoad) {
+                            if ($params.tz_portfolio_plus_layout == 'ajaxInfiScroll') {
+                                $('#tz_append').removeAttr('style').html('<a class="tzNomore">' + $var.loadedText + '</a>');
+                            }
+                            $('#tz_append a').addClass('tzNomore');
+                        } else {
+                            $('#tz_append').empty();
                         }
-                        $('#tz_append a').addClass('tzNomore');
-                        $('#infscr-loading').css('display', 'none');
+
+                        $('#infscr-loading').remove();
                     }
                 },
                 loading: {
@@ -548,11 +579,9 @@
 
                         var $tzppIsotope    = $tzppScroll.data("tzPortfolioPlusIsotope");
                         $tzppIsotope.tz_init();
-
                         if($var.timeline){
                             // trigger scroll again
                             $tzppIsotope.isotope( 'insert', $newElems);
-
                             // Delete date haved
                             $newElems.each(function(){
                                 var tzClass = $(this).attr('class');
@@ -584,6 +613,8 @@
                                 $($var.sortParentTag).append($newFilter);
                                 $tzppIsotope.loadPortfolio();
                             }
+                            $tzppIsotope.afterLoadPortfolio();
+                            $tzppIsotope.triggerOnClickItem();
 
                         }
 
@@ -659,6 +690,24 @@
                             //move item-more to the end
                             $('div#tz_append').find('a:first').show();
                         }
+
+                        // Call functions ajaxComplete added
+                        if(TZ_Portfolio_Plus.infiniteScroll.ajaxCompletes.length){
+                            $.each(TZ_Portfolio_Plus.infiniteScroll.ajaxCompletes, function(index, func){
+                                if(typeof func === 'function') {
+                                    func($newElems, $tzppIsotope);
+                                }
+                            });
+                        }
+                        // Call load page when system can't find latest item
+                        if($params.tz_portfolio_plus_layout == 'ajaxInfiScroll' || $params.tz_portfolio_plus_layout == 'ajaxButton'){
+                            var index   =   $tppUtility.readCookie('tppLatestItem');
+                            if (index != null) {
+                                if(!$('#'+ index).length){
+                                    $tzppScroll.infinitescroll('retrieve');
+                                }
+                            }
+                        }
                     });
                 }
             }
@@ -680,6 +729,7 @@
                     $tzppScroll.infinitescroll('retrieve');
                 }
             });
+
         }
 
         if(!$params.tz_portfolio_plus_layout || $params.tz_portfolio_plus_layout == 'ajaxButton'){
@@ -691,32 +741,23 @@
                 $tzppScroll.infinitescroll('retrieve');
             });
         }
-    };
 
-    //var tz = $.tzPortfolioPlusInfiniteScroll.ajaxLoadComplete = $.extend(true,function($element){
-    //    if(tz.data.length){
-    //        tz.data.each(function(fn, value){
-    //            if(typeof fn == 'function'){
-    //                // Call function
-    //                fn();
-    //            }
-    //        });
-    //    }
-    //}, {
-    //    data: []
-    //});
-    //
-    //$.tzPortfolioPlusInfiniteScroll.addCompleteFunction  = function(fn){
-    //    if(fn && typeof fn){
-    //        tz.data.push(fn);
-    //    }
-    //};
+        // Call load page when system can't find latest item
+        if($params.tz_portfolio_plus_layout == 'ajaxInfiScroll' || $params.tz_portfolio_plus_layout == 'ajaxButton'){
+            var index   =   $tppUtility.readCookie('tppLatestItem');
+            if (index != null) {
+                if(!$('#'+ index).length){
+                    $tzppScroll.infinitescroll('retrieve');
+                }
+            }
+        }
+    };
 
     // Create options object
     $.tzPortfolioPlusInfiniteScroll.defaults  = {
         rootPath        : '',
         msgText         : '<i class="tz-icon-spinner tz-spin"></i><em>Loading the next set of posts...</em>',
-        loadedText      : 'No more pages to load',
+        loadedText      : 'No more items to load',
         navSelector     : '#loadaj a',    // selector for the paged navigation
         nextSelector    : '#loadaj a:first',  // selector for the NEXT link (to page 2)
         itemSelector    : '.element',     // selector for all items you'll retrieve
@@ -735,12 +776,11 @@
         if(options === undefined) options   = {};
         if(typeof options === 'object'){
             // Call function
-            return this.each(function() {
-                // Call function
-                new $.tzPortfolioPlusInfiniteScroll(this,options);
-            });
-            //return new $.tzPortfolioPlusInfiniteScroll(this,options);
+            if ($(this).data("tzPortfolioPlusInfiniteScroll") === undefined) {
+                new $.tzPortfolioPlusInfiniteScroll(this, options);
+            }else{
+                $(this).data('tzPortfolioPlusInfiniteScroll');
+            }
         }
-    }
-
-})(jQuery,window);
+    };
+})(jQuery,window, window.TZ_Portfolio_Plus);

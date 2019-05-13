@@ -31,7 +31,7 @@ gulp.task('less-admin', function () {
 });
 
 gulp.task('less-font-awesome', function () {
-    return gulp.src('tz_portfolio_plus_sources/front_end/less/core/fonts/fontawesome-free-5.7.2/all.less')
+    return gulp.src('tz_portfolio_plus_sources/front_end/less/core/fonts/fontawesome-free-5.8.2/all.less')
         .pipe(less({
             paths: [ path.join(__dirname, 'less', 'includes') ]
         }))
@@ -43,7 +43,7 @@ gulp.task('less-font-awesome', function () {
 
 
 gulp.task('less-v4-shim', function () {
-    return gulp.src('tz_portfolio_plus_sources/front_end/less/core/fonts/fontawesome-free-5.7.2/v4-shims.less')
+    return gulp.src('tz_portfolio_plus_sources/front_end/less/core/fonts/fontawesome-free-5.8.2/v4-shims.less')
         .pipe(less({
             paths: [ path.join(__dirname, 'less', 'includes') ]
         }))
@@ -113,7 +113,7 @@ gulp.task('cssmin-tz_portfolio', function () {
 
 var minify = require('gulp-minify');
 gulp.task('js-minify', function() {
-    gulp.src(['tz_portfolio_plus_sources/front_end/js/core.js', 'tz_portfolio_plus_sources/front_end/js/tz_portfolio_plus-j4.js'])
+    gulp.src(['tz_portfolio_plus_sources/front_end/js/core.js', 'tz_portfolio_plus_sources/front_end/js/tz_portfolio_plus.js'])
         .pipe(minify({
             ext:{
                 // src:'.js',
@@ -133,6 +133,17 @@ gulp.task('js-minify__back-end', function() {
             exclude: ['tasks']
         }))
         .pipe(gulp.dest('tz_portfolio_plus_sources/back_end/dist'))
+});
+gulp.task('js-minify__back-end_introguide', function() {
+    gulp.src(['tz_portfolio_plus_sources/back_end/js/introguide.js'])
+    .pipe(minify({
+        ext:{
+            src:'.js',
+            min:'.min.js'
+        },
+        exclude: ['tasks']
+    }))
+    .pipe(gulp.dest('tz_portfolio_plus_sources/back_end/dist'))
 });
 
 // var gulp = require('gulp');
