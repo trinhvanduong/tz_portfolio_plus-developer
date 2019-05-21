@@ -23,11 +23,7 @@ TZ_Portfolio_Plus.infiniteScroll = TZ_Portfolio_Plus.infiniteScroll || {};
             }
 
             var $form = $(form),
-                tppmatch = "", layout = task;
-
-            if(task && task.match(".")){
-                tppmatch    = task.split(".");
-            }
+                tppmatch = task.split("."), layout = task;
 
             if(tppmatch.length){
                 layout  = tppmatch[tppmatch.length - 1];

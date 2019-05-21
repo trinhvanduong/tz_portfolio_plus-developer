@@ -688,4 +688,52 @@
   }
 }
 
+/* Since v2.2.5 */
+.tplElegant #tz_options{
+  .option-combo{
+    &.dropdown{
+      margin-right: 5px;
+      display: inline-block;
+      a{
+        &.btn{
+          border: none;
+          -webkit-border-radius: 0;
+          -moz-border-radius: 0;
+          border-radius: 0;
+        }
+        &:hover{
+          background: #f9f9f9;
+        }
+      }
+    }
+  }
+  .dropdown-menu{
+    border-color: #ebebeb;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    &.open{
+      display: block;
+    }
+    a{
+      display: block;
+      text-align: left;
+    }
+  }
+  .dropdown-toggle{
+    cursor: pointer;
+    background: none;
+    border: 1px solid #ebebeb;
+    &:active{
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+    &:focus{
+      outline: none;
+    }
+  }
+}
+/* End since v2.2.5 */
+
 @import "view_edit_article";

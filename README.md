@@ -10,6 +10,14 @@ Demo: http://demo.tzportfolio.com/
 
 *** Changelog ***
 
+21/05/2019 - 2.2.5
+
+	- Update front_end/js/tz_portfolio_plus.js
+	- Update front_end/less/core/import/tzportfolioplus.less
+	- Update front_end/less/templates/elegant/template.less
+	- Added front_end/vendor/infinite-scroll-2.1.0 library to override it:
+		+ Added options "ajaxMethod" and "ajaxData".
+
 13/05/2019 - 2.2.4
 
 	- Remove front_end/js/tz_portfolio_plus.js and change front_end/js/tz_portfolio_plus-j4.js to front_end/js/tz_portfolio_plus.js

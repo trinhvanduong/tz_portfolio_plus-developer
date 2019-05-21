@@ -123,6 +123,18 @@ gulp.task('js-minify', function() {
         }))
         .pipe(gulp.dest('tz_portfolio_plus_sources/front_end/dist'))
 });
+gulp.task('js-minify-lib-infinitescroll', function() {
+    gulp.src(['tz_portfolio_plus_sources/front_end/js/libraries/jquery.infinitescroll.custom.js'])
+        .pipe(minify({
+            ext:{
+                // src:'.js',
+                min:'.min.js'
+            },
+            exclude: ['tasks']
+        }))
+        // .pipe(rename("jquery.infinitescroll.min.js"))
+        .pipe(gulp.dest('tz_portfolio_plus_sources/front_end/dist'))
+});
 gulp.task('js-minify__back-end', function() {
     gulp.src(['tz_portfolio_plus_sources/back_end/js/tpp-field-permissions.js'])
         .pipe(minify({

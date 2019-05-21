@@ -1,7 +1,15 @@
 //Sort
 
-(function($, window){
+(function($, window, TZ_Portfolio_Plus){
     'use strict';
+
+    // ajaxCompletes array with value is the function
+    TZ_Portfolio_Plus.infiniteScroll  = {
+        "addAjaxComplete": function(func){
+            this.ajaxCompletes.push(func);
+        }
+        ,"ajaxCompletes": []
+    }
 
     function tzSortFilter(srcObj, desObj, order) {
         if ((!order || order == 'auto')
@@ -27,54 +35,11 @@
         return true;
     }
 
-    // function ajaxComments($element, itemid, text, link) {
-    //     if ($element.length) {
-    //         if ($element.find('.name a').length) {
-    //             var url = 'index.php?option=com_tz_portfolio_plus&task=portfolio.ajaxcomments',
-    //                 $href = [],
-    //                 $articleId = [];
-    //             if (link) {
-    //                 url = link;
-    //             }
-    //             $element.map(function (index, obj) {
-    //                 if (jQuery(obj).find('.name a').length) {
-    //                     if (jQuery(obj).find('.name a').attr('href').length) {
-    //                         $href.push(jQuery(obj).find('.name a').attr('href'));
-    //                         if (jQuery(obj).attr('id')) {
-    //                             $articleId.push(jQuery(obj).attr('id'));
-    //                         }
-    //                     }
-    //                 }
-    //             });
-    //
-    //             jQuery.ajax({
-    //                 type: 'post',
-    //                 url: url,
-    //                 data: {
-    //                     Itemid: itemid,
-    //                     url: window.Base64.encode(window.JSON.encode($href)),
-    //                     id: window.Base64.encode(window.JSON.encode($articleId))
-    //                 }
-    //             }).success(function (data) {
-    //                 if (data && data.length) {
-    //                     var $comment = window.JSON.decode(data);
-    //                     if (typeof $comment == 'object') {
-    //                         jQuery.each($comment, function (key, value) {
-    //                             if (jQuery('#' + key).find('.TzPortfolioCommentCount').length) {
-    //                                 jQuery('#' + key).find('.TzPortfolioCommentCount').html(text + '<span>' + value + '</span>');
-    //                             }
-    //                         });
-    //                     }
-    //                 }
-    //             });
-    //         }
-    //     }
-    // }
-
     $.tzPortfolioPlusIsotope  = function(el,options){
 
         var $tzppIsotope   = $(el),
-            $var    = $.extend(true,$.tzPortfolioPlusIsotope.defaults,options);
+            $defOptions = $.extend(true,{},$.tzPortfolioPlusIsotope.defaults),
+            $var    = $.extend(true,$defOptions,options);
 
         if(!$var.params.orderby_sec.length){
             $var.params.orderby_sec = 'rdate';
@@ -86,7 +51,12 @@
         switch($params.orderby_sec){
             default:
                 $isotope_options.core.sortBy        = 'original-order';
-                $isotope_options.core.sortAscending = false;
+                $isotope_options.core.sortAscending = true;
+                break;
+            case 'order':
+            case 'rorder':
+                $isotope_options.core.sortBy        = 'original-order';
+                $isotope_options.core.sortAscending = true;
                 break;
             case 'date':
                 $isotope_options.core.sortBy        = 'date';
@@ -297,7 +267,7 @@
                     if(value == 'date'){
                         if($params.orderby_sec == 'rdate'
                             || ($params.orderby_sec != 'date'
-                            && $params.orderby_sec != 'rdate')){
+                                && $params.orderby_sec != 'rdate')){
                             options.sortAscending    = false;
                         }else{
                             if($params.orderby_sec == 'date'){
@@ -308,7 +278,7 @@
                     if(value == 'hits'){
                         if($params.orderby_sec == 'hits'
                             || ($params.orderby_sec != 'hits'
-                            && $params.orderby_sec != 'rhits')){
+                                && $params.orderby_sec != 'rhits')){
                             options.sortAscending    = false;
                         }else{
                             if($params.orderby_sec == 'rhits'){
@@ -352,7 +322,7 @@
         //'elementSelector'           : '.element',
         'elementFeatureSelector'    : '.tz_feature_item',
         'JSON'                      : {},
-        timeline                    : false,
+        "timeline"                    : false,
         'params'                    : {
             'orderby_sec'                   : 'rdate',
             'tz_show_filter'                : 1,
@@ -381,12 +351,13 @@
                     },
                     hits: function ($elem) {
                         var number = ($elem.hasClass('element') && $elem.attr('data-hits').length) ?
-                            $elem.attr('data-hits') : $elem.find('.hits').text();
+                            $elem.attr('data-hits') : $elem.find('.hits,.tpp-item-hit').text();
                         return parseInt(number,10);
                     },
                     name: function ($elem) {
-                        var name = ($elem.hasClass('element') && $elem.find('.TzPortfolioTitle.name').length)?$elem.find('.TzPortfolioTitle.name').text().trim():
-                                (($elem.attr('data-title').length)?$elem.attr('data-title'):''),
+                        var name = ($elem.hasClass('element') && $elem.find('.TzPortfolioTitle.name,.tpp-item-title.name')
+                                .length)?$elem.find('.TzPortfolioTitle.name, .tpp-item-title.name').text().trim():
+                            (($elem.attr('data-title').length)?$elem.attr('data-title'):''),
                             itemText = name.length ? name : $elem.text().trim();
                         return itemText;
                     }
@@ -410,7 +381,7 @@
             // Call function
             return this.each(function() {
                 // Call function
-                if ($(this).data('tzPortfolioPlusIsotope') === undefined) {
+                if ($(this).data("tzPortfolioPlusIsotope") === undefined) {
                     new $.tzPortfolioPlusIsotope(this, options);
                 }else{
                     $(this).data('tzPortfolioPlusIsotope');
@@ -429,21 +400,21 @@
 
         var tzpage    = 1;
 
-        function getTags() {
-            var tags    =   [];
-            $($var.sortParentTag + " " + $var.sortChildTag).each(function () {
-                tags.push($(this).attr('data-option-value').replace(".","") );
-            });
-            return window.JSON.encode(tags);
-        }
-
-        function getCategories() {
-            var categories    =   [];
-            $($var.sortParentTag + " " + $var.sortChildTag).each(function () {
-                categories.push($(this).attr('data-option-value').replace(".category",""));
-            });
-            return window.JSON.encode(categories);
-        }
+        // function getTags() {
+        //     var tags    =   [];
+        //     $($var.sortParentTag + " " + $var.sortChildTag).each(function () {
+        //         tags.push($(this).attr('data-option-value').replace(".","") );
+        //     });
+        //     return window.JSON.encode(tags);
+        // }
+        //
+        // function getCategories() {
+        //     var categories    =   [];
+        //     $($var.sortParentTag + " " + $var.sortChildTag).each(function () {
+        //         categories.push($(this).attr('data-option-value').replace(".category",""));
+        //     });
+        //     return window.JSON.encode(categories);
+        // }
 
 
         var $scroll = true;
@@ -454,6 +425,38 @@
                 nextSelector : $var.nextSelector,  // selector for the NEXT link (to page 2)
                 itemSelector : $var.itemSelector,     // selector for all items you'll retrieve
                 dataType     : $var.dataType,
+                // path: function(curpage){
+                //         // var $url = 'index.php?option=com_tz_portfolio_plus&view=portfolio&task=portfolio.ajax&layout=default:item';
+                //
+                //     var $url    = $($var.nextSelector).attr('href') + "&tags="+getTags();
+                //         // alert(getTags());
+                //         // alert($($var.nextSelector).attr('href'));
+                //     // alert(encodeURI($url));
+                //         return $url;
+                // },
+                template: function(data){
+                    if(data) {
+                        if(data.filter){
+                            var $newFilter = $(data.filter);
+                            var $newFilter = $newFilter.map(function(){
+                                var checkFilter = $($var.sortParentTag).find($var.sortChildTag+"[data-option-value=\""+$(this).data("option-value")+"\"]").index();
+
+                                if(checkFilter == -1){
+                                    return this;
+                                }
+                            });
+                            $($var.sortParentTag).append($newFilter);
+                            var $tzppIsotope    = $tzppScroll.data("tzPortfolioPlusIsotope");
+                            $tzppIsotope.loadPortfolio();
+                            if(typeof tzSortFilter != 'undefined') {
+                                tzSortFilter($($var.sortParentTag).find($var.sortChildTag), $($var.sortParentTag), $params.filter_tags_categories_order);
+                            }
+                        }
+                        return data.articles;
+                    }
+                },
+
+                // appendCallback: false,
                 errorCallback: function() {
                     if(!$var.errorCallback) {
                         if (!$params.tz_portfolio_plus_layout || $params.tz_portfolio_plus_layout == 'ajaxButton') {
@@ -474,128 +477,164 @@
                 }
             },
             // call Isotope as a callback
-            function( newElements ) {
-                $('#infscr-loading').css('display','none');
+            function( data, options, url ) {
+                var newElements = data;
+                if(data) {
+                    // Append element if dataType is json
+                    if (data.articles && !options.appendCallback) {
+                        var box = $("<div/>");
+                        box.append(data.articles);
 
-                var $newElems =   $( newElements ).css({ opacity: 0 });
+                        newElements =  box.children().get();
+                        $tzppScroll.append(newElements);
+                    }
+                    $('#infscr-loading').css('display','none');
 
-                // if($params.comment_function_type == 'js') {
-                //     // Ajax show comment count.
-                //     if (parseInt($params.tz_show_count_comment,10)) {
-                //         if ($params.tz_comment_type == 'facebook' || $params.tz_comment_type == 'disqus'){
-                //             if(typeof ajaxComments != 'undefined') {
-                //                 ajaxComments($newElems, $var.itemID, $var.commentText);
-                //             }
-                //         }
-                //     }
-                // }
+                    var $newElems =   $( newElements ).css({ opacity: 0 });
 
-                //$.tzPortfolioPlusInfiniteScroll.ajaxLoadComplete();
+                    // if($params.comment_function_type == 'js') {
+                    //     // Ajax show comment count.
+                    //     if (parseInt($params.tz_show_count_comment,10)) {
+                    //         if ($params.tz_comment_type == 'facebook' || $params.tz_comment_type == 'disqus'){
+                    //             if(typeof ajaxComments != 'undefined') {
+                    //                 ajaxComments($newElems, $var.itemID, $var.commentText);
+                    //             }
+                    //         }
+                    //     }
+                    // }
 
-                // ensure that images load before adding to masonry layout
-                $newElems.imagesLoaded(function() {
+                    //$.tzPortfolioPlusInfiniteScroll.ajaxLoadComplete();
 
-                    // show elems now they're ready
-                    $newElems.animate({opacity: 1});
+                    // ensure that images load before adding to masonry layout
+                    $newElems.imagesLoaded(function() {
 
-                    //$.tzPortfolioPlusIsotope.tz_init();
-                    var $tzppIsotope    = $tzppScroll.data("tzPortfolioPlusIsotope");
-                    $tzppIsotope.tz_init();
+                        // show elems now they're ready
+                        $newElems.animate({opacity: 1});
 
-                    if($var.timeline){
-                        // trigger scroll again
-                        $tzppIsotope.isotope( 'insert', $newElems);
+                        var $tzppIsotope    = $tzppScroll.data("tzPortfolioPlusIsotope");
+                        $tzppIsotope.tz_init();
 
-                        // Delete date haved
-                        $newElems.each(function(){
-                            var tzClass = $(this).attr('class');
-                            if(tzClass.match(/.*?TzDate.*?/i)){
-                                var LastDate2 = $(this).attr('data-category');
-                                if(LastDate == LastDate2){
+                        if($var.timeline){
+                            // trigger scroll again
+                            $tzppIsotope.isotope( 'insert', $newElems);
 
-                                    $(this).remove();
-                                    $tzppIsotope.isotope('reloadItems');
+                            // Delete date haved
+                            $newElems.each(function(){
+                                var tzClass = $(this).attr('class');
+                                if(tzClass.match(/.*?TzDate.*?/i)){
+                                    var LastDate2 = $(this).attr('data-category');
+                                    if(LastDate == LastDate2){
+
+                                        $(this).remove();
+                                        $tzppIsotope.isotope('reloadItems');
+                                    }
+                                    else
+                                        LastDate    = LastDate2;
                                 }
-                                else
-                                    LastDate    = LastDate2;
-                            }
-                        });
-                    }else {
-                        // trigger scroll again
-                        $tzppIsotope.isotope('appended', $newElems);
-                    }
+                            });
+                        }else {
+                            // trigger scroll again
+                            $tzppIsotope.isotope('appended', $newElems);
 
-                    tzpage++;
+                            // Append tags filter
+                            if (data.filter && !options.appendCallback) {
+                                var $newFilter = $(data.filter);
+                                var $newFilter = $newFilter.map(function(){
+                                    var checkFilter = $($var.sortParentTag).find($var.sortChildTag+"[data-option-value=\""+$(this).data("option-value")+"\"]").index();
 
-                    if(parseInt($params.tz_show_filter,10)) {
-                        var $lang   = '';
-                        if($var.lang && $var.lang.length){
-                            $lang   = '&lang=' + $var.lang;
-                        }
-                        if (!parseInt($params.show_all_filter,10)) {
-                            if ($params.tz_filter_type == 'tags') {
-                                $.ajax({
-                                    url: 'index.php?option=com_tz_portfolio_plus&task=portfolio.ajaxtags' + $lang,
-                                    data: {
-                                        'tags': getTags(),
-                                        'Itemid': $var.Itemid,
-                                        'page': tzpage
+                                    if(checkFilter == -1){
+                                        return this;
                                     }
-                                }).success(function (data) {
-                                    if (data.length) {
-                                        var tztag = $(data);
-                                        $($var.sortParentTag).append(tztag);
-                                        $tzppIsotope.loadPortfolio();
-
-                                        if ($params.filter_tags_categories_order) {
-                                            //Sort tags or categories filter
-                                            if(typeof tzSortFilter != 'undefined') {
-                                                tzSortFilter($($var.sortParentTag).find($var.sortChildTag), $($var.sortParentTag), $params.filter_tags_categories_order);
-                                            }
-                                        }
-                                    }
-
-                                    $scroll = true;
                                 });
+                                $($var.sortParentTag).append($newFilter);
+                                $tzppIsotope.loadPortfolio();
                             }
 
-                            if ($params.tz_filter_type == 'categories') {
-                                $.ajax({
-                                    url: '?option=com_tz_portfolio_plus&task=portfolio.ajaxcategories' + $lang,
-                                    data: {
-                                        'catIds': getCategories(),
-                                        'Itemid': $var.Itemid,
-                                        'page': tzpage
-                                    }
-                                }).success(function (data) {
-                                    if (data.length) {
-                                        var tzCategories = $(data);
-                                        $($var.sortParentTag).append(tzCategories);
-                                        $tzppIsotope.loadPortfolio();
-
-                                        if ($params.filter_tags_categories_order) {
-                                            //Sort tags or categories filter
-                                            if(typeof tzSortFilter != 'undefined') {
-                                                tzSortFilter($($var.sortParentTag).find($var.sortChildTag), $($var.sortParentTag), $params.filter_tags_categories_order);
-                                            }
-                                        }
-                                    }
-
-                                    $scroll = true;
-                                });
-                            }
                         }
-                    }else{
+
+                        tzpage++;
+
+                        // if(parseInt($params.tz_show_filter,1)) {
+                        //     var $lang   = '';
+                        //     if($var.lang && $var.lang.length){
+                        //         $lang   = '&lang=' + $var.lang;
+                        //     }
+                        //     if (!parseInt($params.show_all_filter,1)) {
+                        //         // if ($params.tz_filter_type == 'tags') {
+                        //         //     $.ajax({
+                        //         //         url: 'index.php?option=com_tz_portfolio_plus&task=portfolio.ajaxtags' + $lang,
+                        //         //         data: {
+                        //         //             'tags': getTags(),
+                        //         //             'Itemid': $var.Itemid,
+                        //         //             'page': tzpage
+                        //         //         }
+                        //         //     }).success(function (data) {
+                        //         //         if (data.length) {
+                        //         //             var tztag = $(data);
+                        //         //             $($var.sortParentTag).append(tztag);
+                        //         //             $tzppIsotope.loadPortfolio();
+                        //         //
+                        //         //             if ($params.filter_tags_categories_order) {
+                        //         //                 //Sort tags or categories filter
+                        //         //                 if(typeof tzSortFilter != 'undefined') {
+                        //         //                     tzSortFilter($($var.sortParentTag).find($var.sortChildTag), $($var.sortParentTag), $params.filter_tags_categories_order);
+                        //         //                 }
+                        //         //             }
+                        //         //         }
+                        //         //
+                        //         //         $scroll = true;
+                        //         //     });
+                        //         // }
+                        //
+                        //         if ($params.tz_filter_type == 'categories') {
+                        //             $.ajax({
+                        //                 url: '?option=com_tz_portfolio_plus&task=portfolio.ajaxcategories' + $lang,
+                        //                 data: {
+                        //                     'catIds': getCategories(),
+                        //                     'Itemid': $var.Itemid,
+                        //                     'page': tzpage
+                        //                 }
+                        //             }).success(function (data) {
+                        //                 if (data.length) {
+                        //                     var tzCategories = $(data);
+                        //                     $($var.sortParentTag).append(tzCategories);
+                        //                     $tzppIsotope.loadPortfolio();
+                        //
+                        //                     if ($params.filter_tags_categories_order) {
+                        //                         //Sort tags or categories filter
+                        //                         if(typeof tzSortFilter != 'undefined') {
+                        //                             tzSortFilter($($var.sortParentTag).find($var.sortChildTag), $($var.sortParentTag), $params.filter_tags_categories_order);
+                        //                         }
+                        //                     }
+                        //                 }
+                        //
+                        //                 $scroll = true;
+                        //             });
+                        //         }
+                        //     }
+                        // }else{
+                        //     $scroll = true;
+                        // }
+
                         $scroll = true;
-                    }
 
-                    //if there still more item
-                    if($newElems.length){
+                        //if there still more item
+                        if($newElems.length){
 
-                        //move item-more to the end
-                        $('div#tz_append').find('a:first').show();
-                    }
-                });
+                            //move item-more to the end
+                            $('div#tz_append').find('a:first').show();
+                        }
+
+                        // Call functions ajaxComplete added
+                        if(TZ_Portfolio_Plus.infiniteScroll.ajaxCompletes.length){
+                            $.each(TZ_Portfolio_Plus.infiniteScroll.ajaxCompletes, function(index, func){
+                                if(typeof func === 'function') {
+                                    func($newElems, $tzppIsotope);
+                                }
+                            });
+                        }
+                    });
+                }
             }
         );
 
@@ -607,6 +646,12 @@
                         $scroll	= false;
                         $tzppScroll.infinitescroll('retrieve');
                     }
+                }
+            });
+
+            $(window).bind("load resize",function(){
+                if($(document).height() <= $(window).height()){
+                    $tzppScroll.infinitescroll('retrieve');
                 }
             });
         }
@@ -622,25 +667,6 @@
         }
     };
 
-    //var tz = $.tzPortfolioPlusInfiniteScroll.ajaxLoadComplete = $.extend(true,function($element){
-    //    if(tz.data.length){
-    //        tz.data.each(function(fn, value){
-    //            if(typeof fn == 'function'){
-    //                // Call function
-    //                fn();
-    //            }
-    //        });
-    //    }
-    //}, {
-    //    data: []
-    //});
-    //
-    //$.tzPortfolioPlusInfiniteScroll.addCompleteFunction  = function(fn){
-    //    if(fn && typeof fn){
-    //        tz.data.push(fn);
-    //    }
-    //};
-
     // Create options object
     $.tzPortfolioPlusInfiniteScroll.defaults  = {
         rootPath        : '',
@@ -649,7 +675,7 @@
         navSelector     : '#loadaj a',    // selector for the paged navigation
         nextSelector    : '#loadaj a:first',  // selector for the NEXT link (to page 2)
         itemSelector    : '.element',     // selector for all items you'll retrieve
-        dataType        : 'html',
+        dataType        : 'json',
         Itemid          : null,
         commentText     : 'Comment count:',
         timeline        : false,
@@ -664,12 +690,12 @@
         if(options === undefined) options   = {};
         if(typeof options === 'object'){
             // Call function
-            return this.each(function() {
-                // Call function
-                new $.tzPortfolioPlusInfiniteScroll(this,options);
-            });
-            //return new $.tzPortfolioPlusInfiniteScroll(this,options);
+            if ($(this).data("tzPortfolioPlusInfiniteScroll") === undefined) {
+                new $.tzPortfolioPlusInfiniteScroll(this, options);
+            }else{
+                $(this).data('tzPortfolioPlusInfiniteScroll');
+            }
         }
     }
 
-})(jQuery,window);
+})(jQuery,window, window.TZ_Portfolio_Plus);
