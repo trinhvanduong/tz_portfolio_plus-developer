@@ -1,0 +1,33 @@
+
+@fa-font-path:         "../../../../../../components/com_tz_portfolio_plus/fonts";
+@fa-css-prefix:        tp;
+@fa-font-display:      auto;
+
+@fa-var-facebook-f: "\f39e";
+@fa-var-joomla: "\f1aa";
+@fa-var-globe: "\f0ac";
+@fa-var-youtube: "\f167";
+
+
+@font-face {
+  font-family: 'tpFont Awesome 5 Brands';
+  font-style: normal;
+  font-weight: normal;
+  font-display: @fa-font-display;
+  src: url('@{fa-font-path}/fa-brands-400.eot');
+  src: url('@{fa-font-path}/fa-brands-400.eot?#iefix') format('embedded-opentype'),
+  url('@{fa-font-path}/fa-brands-400.woff2') format('woff2'),
+  url('@{fa-font-path}/fa-brands-400.woff') format('woff'),
+  url('@{fa-font-path}/fa-brands-400.ttf') format('truetype'),
+  url('@{fa-font-path}/fa-brands-400.svg#fontawesome') format('svg');
+}
+
+.@{fa-css-prefix}b {
+  font-family: 'tpFont Awesome 5 Brands';
+}
+
+
+.@{fa-css-prefix}-facebook-f:before { content: @fa-var-facebook-f; }
+.@{fa-css-prefix}-youtube:before { content: @fa-var-youtube; }
+.@{fa-css-prefix}-joomla:before { content: @fa-var-joomla; }
+.@{fa-css-prefix}-globe:before { content: @fa-var-globe; }

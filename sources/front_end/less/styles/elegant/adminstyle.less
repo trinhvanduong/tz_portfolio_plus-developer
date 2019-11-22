@@ -1,0 +1,221 @@
+@font_family_1: inherit;
+@import "vars";
+body{
+  background: #f5f5f5 !important;
+}
+.tz-icon-batch {
+  display: inline-block;
+  background: url(../assets/icon-32-batch.png) no-repeat;
+}
+.tz-icon-compile {
+  display: inline-block;
+  background: url(../assets/icon-32-compile.png) no-repeat;
+}
+.tz-icon-compress {
+  display: inline-block;
+  background: url(../assets/icon-32-compress.png) no-repeat;
+}
+.tz-icon-expand {
+  display: inline-block;
+  background: url(../assets/icon-32-expand.png) no-repeat;
+}
+.tz-icon-wikipedia {
+  display: inline-block;
+  background: url(../assets/wikipedia.png) no-repeat;
+}
+.tz-icon-youtube {
+  display: inline-block;
+  background: url(../assets/youtube.png) no-repeat;
+}
+.icon-check {
+  &:before {
+    font-family: @font_family_1 !important;
+    font-size: 13px;
+  }
+}
+#articles_assignment {
+  .hidden {
+    display: none;
+  }
+}
+.ui-helper-hidden-accessible {
+  display: none;
+}
+.tz-icon-14 {
+  background-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+.form-horizontal {
+  .controls {
+    border: none;
+    min-height: 0;
+  }
+}
+.tz-state-highlight {
+  background: #fbfaf0;
+  border: 1px solid #fcefa1;
+  float: left;
+}
+.tz-state-highlight-row {
+  background: #fbfaf0;
+  border: 1px solid #fcefa1;
+}
+#toolbar {
+  #toolbar-wikipedia {
+    float: right;
+  }
+  #toolbar-youtube {
+    float: right;
+  }
+}
+.max-width-180 {
+  max-width: 180px;
+}
+.modal.modal-md {
+  width: 40%;
+  margin-left: -20%;
+}
+.modal.modal-sm {
+  width: 30%;
+  margin-left: -15%;
+}
+div#loadPreset.modal.fade.in {
+  top: 20%;
+}
+div#removePreset.modal.fade.in {
+  top: 20%;
+}
+.max-height-300 {
+  width: 104%;
+  overflow: auto;
+  margin-top: 5px;
+  max-height: 311px;
+}
+.tpDashboard {
+  .tpQuicklink {
+    display: table;
+    .tpButton {
+      margin: 10px;
+      display: inline-block;
+      a {
+        border: 1px solid @border-base;
+        border-radius: 3px;
+        background: white;
+        width: 120px;
+        height: 120px;
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+        color: #222222;
+        text-decoration: none;
+        font-weight: bold;
+        div {
+          margin-top: 5px;
+        }
+        &:hover {
+          box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+      }
+    }
+  }
+  .tpHeadline {
+    .reset-heading{
+      background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+      border: medium none;
+      clear: none;
+      display: block;
+      float: none;
+      margin: 0;
+      padding: 0;
+      position: static;
+      width: auto;
+    }
+    border: 1px solid @border-base;
+    background: white;
+    padding: 22px 27px;
+    margin: 0 0 15px 10px;
+    p {
+      margin: 7px 0 0;
+    }
+  }
+  .tpInfo {
+    border: 1px solid @border-base;
+    background: white;
+    margin-top: 10px;
+    > div {
+      padding: 15px 20px;
+      border: 1px solid @border-base;
+    }
+    .tpVersion {
+      line-height: 1.8;
+      .checking {
+        display: none;
+      }
+      .latest {
+        display: none;
+        color: #008000;
+      }
+      .requires-updating {
+        display: none;
+        color: red;
+        .btn {
+          padding: 3px 10px;
+          margin-left: 5px;
+        }
+      }
+      .versions-meta {
+        .text-muted {
+          color: #888888;
+          span {
+            color: #008000;
+            font-weight: bold;
+          }
+          .oldversion {
+            color: red;
+          }
+        }
+      }
+    }
+  }
+  .tpDetail {
+    ul {
+      list-style: outside none none;
+      margin: 0;
+      li{
+        line-height: 1.8;
+        span {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+.tpContainer {
+  padding: 15px 20px !important;
+  background: white;
+  border: 1px solid @border-base;
+  border-radius: 3px;
+}
+.tpArticle {
+  .nav {
+    margin-bottom: 0;
+  }
+  .tab-content {
+    background: white none repeat scroll 0 0;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    padding: 24px 20px;
+    #layout_params {
+      .tab-content {
+        padding: 0;
+        border: none;
+      }
+    }
+  }
+  .accordion-group {
+    background: white;
+  }
+}
+

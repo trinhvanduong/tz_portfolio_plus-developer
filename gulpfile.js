@@ -9,7 +9,7 @@ var rename = require('gulp-rename');
 
 var sourcemaps = require('gulp-sourcemaps');
 
-gulp.task('less', function () {
+gulp.task('less-site__tzportfolioplus', function () {
     return gulp.src('tz_portfolio_plus_sources/front_end/less/core/tzportfolioplus.less')
         .pipe(less({
             paths: [ path.join(__dirname, 'less', 'includes') ]
@@ -19,7 +19,17 @@ gulp.task('less', function () {
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('../components/com_tz_portfolio_plus/css'));
 });
-gulp.task('less-admin', function () {
+gulp.task('less-site__style', function () {
+    return gulp.src('tz_portfolio_plus_sources/front_end/less/core/style.less')
+        .pipe(less({
+            paths: [ path.join(__dirname, 'less', 'includes') ]
+        }))
+        .pipe(gulp.dest('tz_portfolio_plus_sources/front_end/dist'))
+        .pipe(cssmin())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest('../components/com_tz_portfolio_plus/css'));
+});
+gulp.task('less-admin__style', function () {
     return gulp.src('tz_portfolio_plus_sources/back_end/less/style.less')
         .pipe(less({
             paths: [ path.join(__dirname, 'less', 'includes') ]
@@ -28,6 +38,26 @@ gulp.task('less-admin', function () {
         .pipe(cssmin())
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('../administrator/components/com_tz_portfolio_plus/css'));
+});
+gulp.task('less-admin__icon-font', function () {
+    return gulp.src('tz_portfolio_plus_sources/back_end/less/tppicon.less')
+        .pipe(less({
+            paths: [ path.join(__dirname, 'less', 'includes') ]
+        }))
+        .pipe(gulp.dest('tz_portfolio_plus_sources/back_end/dist'))
+        .pipe(cssmin())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest('../administrator/components/com_tz_portfolio_plus/css'));
+});
+gulp.task('less-admin-installation', function () {
+    return gulp.src('tz_portfolio_plus_sources/back_end/less/installation/style.less')
+        .pipe(less({
+            paths: [ path.join(__dirname, 'less', 'includes') ]
+        }))
+        .pipe(gulp.dest('tz_portfolio_plus_sources/back_end/dist'))
+        .pipe(cssmin())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest('../administrator/components/com_tz_portfolio_plus/setup/assets/css'));
 });
 
 gulp.task('less-font-awesome', function () {
@@ -54,7 +84,7 @@ gulp.task('less-v4-shim', function () {
 });
 
 gulp.task('less-template-elegant', function () {
-    return gulp.src('tz_portfolio_plus_sources/front_end/less/templates/elegant/template.less')
+    return gulp.src('tz_portfolio_plus_sources/front_end/less/styles/elegant/template.less')
         .pipe(less({
             paths: [ path.join(__dirname, 'less', 'includes') ]
         }))
@@ -72,6 +102,22 @@ gulp.task('less-module-articles', function () {
         // .pipe(cssmin())
         .pipe(rename({suffix: ''}))
         .pipe(gulp.dest('../modules/mod_tz_portfolio_plus_articles/css'));
+});
+
+var sass = require('gulp-sass');
+/* Removed style for "a" tag in file _reboot.scss*/
+gulp.task('sass-bootstrap', function () {
+    return gulp.src('tz_portfolio_plus_sources/front_end/vendor/bootstrap/scss/*.scss')
+        // .pipe(sass().on('error', sass.logError))
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(gulp.dest('tz_portfolio_plus_sources/front_end/dist/bootstrap'));
+});
+
+gulp.task('sass-admin__style', function () {
+    return gulp.src('tz_portfolio_plus_sources/back_end/scss/style.scss')
+        // .pipe(sass().on('error', sass.logError))
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(gulp.dest('tz_portfolio_plus_sources/back_end/dist'));
 });
 
 
@@ -112,7 +158,7 @@ gulp.task('cssmin-tz_portfolio', function () {
 // });
 
 var minify = require('gulp-minify');
-gulp.task('js-minify', function() {
+gulp.task('js-minify__site-tz_portfolio_plus', async function() {
     gulp.src(['tz_portfolio_plus_sources/front_end/js/core.js', 'tz_portfolio_plus_sources/front_end/js/tz_portfolio_plus.js'])
         .pipe(minify({
             ext:{
@@ -123,7 +169,7 @@ gulp.task('js-minify', function() {
         }))
         .pipe(gulp.dest('tz_portfolio_plus_sources/front_end/dist'))
 });
-gulp.task('js-minify-lib-infinitescroll', function() {
+gulp.task('js-minify-lib-infinitescroll', async function() {
     gulp.src(['tz_portfolio_plus_sources/front_end/js/libraries/jquery.infinitescroll.custom.js'])
         .pipe(minify({
             ext:{
@@ -135,7 +181,7 @@ gulp.task('js-minify-lib-infinitescroll', function() {
         // .pipe(rename("jquery.infinitescroll.min.js"))
         .pipe(gulp.dest('tz_portfolio_plus_sources/front_end/dist'))
 });
-gulp.task('js-minify__back-end', function() {
+gulp.task('js-minify__back-end', async function() {
     gulp.src(['tz_portfolio_plus_sources/back_end/js/tpp-field-permissions.js'])
         .pipe(minify({
             ext:{
@@ -146,8 +192,19 @@ gulp.task('js-minify__back-end', function() {
         }))
         .pipe(gulp.dest('tz_portfolio_plus_sources/back_end/dist'))
 });
-gulp.task('js-minify__back-end_introguide', function() {
+gulp.task('js-minify__back-end_introguide', async function() {
     gulp.src(['tz_portfolio_plus_sources/back_end/js/introguide.js'])
+    .pipe(minify({
+        ext:{
+            src:'.js',
+            min:'.min.js'
+        },
+        exclude: ['tasks']
+    }))
+    .pipe(gulp.dest('tz_portfolio_plus_sources/back_end/dist'))
+});
+gulp.task('js-minify__back-end_layoutadmin', async function() {
+    gulp.src(['tz_portfolio_plus_sources/back_end/js/layout-admin-j4.js'])
     .pipe(minify({
         ext:{
             src:'.js',
@@ -161,3 +218,6 @@ gulp.task('js-minify__back-end_introguide', function() {
 // var gulp = require('gulp');
 // var uglify = require('gulp-uglify');
 // var pipeline = require('readable-stream').pipeline;
+
+// var bootstrap = require('bootstrap');
+// gulp

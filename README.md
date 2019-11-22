@@ -10,6 +10,11 @@ Demo: http://demo.tzportfolio.com/
 
 *** Changelog ***
 
+22/11/2019 - 2.3.6
+
+	- Added scss files in back-end.
+	- Change scss of file back_end/scss/style.scss
+
 21/05/2019 - 2.2.5
 
 	- Update front_end/js/tz_portfolio_plus.js

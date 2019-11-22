@@ -2,6 +2,10 @@
   clear: both;
 }
 
+.item {
+  width: auto;
+}
+
 .tz-icon-spinner {
   -webkit-animation: spin 1s infinite linear;
   -moz-animation: spin 1s infinite linear;
@@ -33,9 +37,9 @@
   100% { transform: rotate(359deg); }
 }
 
-.tzpp_bootstrap3 {
-  margin: 0 -15px;
-}
+//.tzpp_bootstrap3 {
+//  margin: 0 -15px;
+//}
 
 .inline-style {
   >.container-fluid>.row {
@@ -82,12 +86,8 @@
 .element{
   background: none;
   .TzInner{
-    border: 1px solid #DDDDDD;
     display: block;
-    line-height: 20px;
-    padding: 4px;
     margin: 10px;
-    background: #fff;
     .transition(all 0.2s ease-in-out 0s);
   }
   .TzPortfolioTitle, .title{
@@ -141,7 +141,6 @@ img{
   .border-radius(0);
 }
 #tz_options{
-  padding-bottom: 15px;
   .selected{
     background: #e6e6e6;
   }
@@ -376,6 +375,11 @@ div#infscr-loading{
 .element{
   .isotope & {
     background: none;
+  }
+  &.radio{
+    .tzpp_bootstrap3 & {
+      margin: 0;
+    }
   }
   .tpp-portfolio__inner{
     border: 1px solid #ebebeb;

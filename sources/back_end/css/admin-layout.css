@@ -86,7 +86,7 @@ a.btn-ino{color:#fff}
 .popover .tab-content{margin-top:0}
 .popover p{margin:0}
 .popover h3.row-header{height:40px;line-height:40px;font-size:13px;font-weight:700;border-bottom:1px solid #eee;margin:-10px 0 10px -10px !important;padding:0 10px}
-.popover #rowresponsiveinputs{margin:10px 0}
+.popover #rowresponsiveinputs{margin-top: 10px;}
 .popover .nav-tab{border-bottom:1px solid #eee;height:40px;margin:-10px 0 0 -10px !important;padding:0}
 .popover .nav-tab > li{float:left;height:40px;line-height:40px;margin:0 10px}
 .popover .nav-tab > li >a{border-radius:0;background:transparent;color:#000;margin:0}
@@ -456,9 +456,10 @@ hr{border-color:#dadada}
     vertical-align: middle;
 }
 .presets .preset .removepreset{
-    position: absolute;
-    bottom: 13px;
-    right: 7px;
+    /*position: absolute;*/
+    /*bottom: 13px;*/
+    /*right: 7px;*/
+    margin: 0 7px 0 9px;
     color: #DA4F49;
     cursor: pointer;
 }
@@ -476,13 +477,14 @@ hr{border-color:#dadada}
 }
 
 .presets .preset .preset-name{
-    background: rgba(255, 255, 255, 0.65);
+    flex: 1;
+    /*background: rgba(255, 255, 255, 0.65);*/
     font-size: 14px;
     font-weight: 600;
     margin: 0;
     overflow: hidden;
     padding: 10px;
-    max-width: 90%;
+    /*max-width: 90%;*/
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -511,6 +513,18 @@ hr{border-color:#dadada}
 }
 .presets .preset .preset-bar .btn{
     margin: 0 3px;
+}
+/* Since v2.2.9*/
+.preset-bottom{
+    display: flex;
+    background: rgba(255, 255, 255, 0.65);
+}
+.preset-bottom .action{
+    display: flex;
+    align-items: center;
+}
+.preset-bottom .downloadpreset{
+    cursor: pointer;
 }
 /* End styles for preset */
 
@@ -617,4 +631,8 @@ hr{border-color:#dadada}
 }
 #layout_params .row-tools .popover .row-fluid#rowresponsiveinputs{
     margin-top: 15px;
+}
+#layout_params .row-tools .rowmove,
+#layout_params .columntools .columnmove {
+    cursor: move;
 }

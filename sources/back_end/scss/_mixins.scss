@@ -1,0 +1,28 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+@mixin box-shadow($properties) {
+  -webkit-box-shadow: $properties;
+  -moz-box-shadow: $properties;
+  box-shadow: $properties;
+}
+@mixin transition($properties) {
+  -webkit-transition: $properties;
+  -moz-transition: $properties;
+  -o-transition: $properties;
+  transition: $properties;
+  -webkit-backface-visibility: hidden;
+}
+@mixin animation($properties) {
+  -webkit-animation: $properties;
+  -moz-animation: $properties;
+  -o-animation: $properties;
+  animation: $properties;
+}
+@mixin box-sizing($property){
+  -webkit-box-sizing: $property;
+  -moz-box-sizing: $property;
+  box-sizing: $property;
+}
