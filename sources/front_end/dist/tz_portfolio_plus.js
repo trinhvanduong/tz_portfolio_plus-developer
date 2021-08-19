@@ -237,6 +237,18 @@
                     $tzppIsotope.find('.element').css({opacity: 1});
                 }
 
+                var dir = $("html").attr("dir"),
+                    _transformsEnabled = true;
+
+                if($var.rtl || (dir !== undefined && dir.toLowerCase() === 'rtl')){
+                    _transformsEnabled  = false;
+
+                    // modify Isotope's absolute position method
+                    $.Isotope.prototype._positionAbs = function( x, y ) {
+                        return { right: x, top: y };
+                    };
+                }
+
                 $tzppIsotope.isotope({
                     resizable: false, // disable normal resizing
                     itemSelector : $isotope_options.core.itemSelector,
@@ -244,6 +256,7 @@
                     sortBy: $isotope_options.core.sortBy,
                     sortAscending: $isotope_options.core.sortAscending,
                     filter: $isotope_options.core.filter,
+                    transformsEnabled: _transformsEnabled,
                     masonry:{
                         columnWidth: newColWidth
                     },
@@ -501,10 +514,10 @@
         'columnWidth'               : '',
         'mainElementSelector'       : '#TzContent',
         'containerElementSelector'  : '#portfolio',
-        //'elementSelector'           : '.element',
         'elementFeatureSelector'    : '.tz_feature_item',
         'JSON'                      : {},
-        "timeline"                    : false,
+        "timeline"                  : false,
+        "rtl"                       : false,
         'params'                    : {
             'orderby_sec'                   : 'rdate',
             'tz_show_filter'                : 1,

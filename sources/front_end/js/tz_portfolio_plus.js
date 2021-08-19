@@ -228,13 +228,79 @@
 
             $var.afterColumnWidth(newColCount,newColWidth);
 
+            function loadVisible($els, trigger) {
+                $els.filter(function () {
+                    var rect = this.getBoundingClientRect();
+                    return rect.top >= 0 && rect.top <= window.innerHeight;
+                }).trigger(trigger);
+            }
+
             if(bool) {
                 $tzppIsotope.find('.element').css({opacity: 0});
             }
             $tzppIsotope.imagesLoaded(function(){
-                $var.afterImagesLoaded(newColCount,newColWidth);
+
                 if(bool) {
                     $tzppIsotope.find('.element').css({opacity: 1});
+                }
+
+                if(parseInt($params.enable_lazyload,10) && (typeof $.fn.lazyload !== "undefined" || typeof window.lazyload !== "undefined")) {
+                    // var $lazyloading = "<span class=\"tz-icon-spinner\"></span>";
+                    var $imgs = $tzppIsotope.find("img:not(.lazyloaded)").addClass("lazyload");
+                    $imgs = $tzppIsotope.find("img.lazyload");
+
+                    $(window).on('scroll', function () {
+                        loadVisible($imgs, 'lazylazy');
+                    });
+
+                    $imgs.css({
+                        "padding-top": function () {
+                            return this.height;
+                        },
+                        "padding-left": function () {
+                            return this.width;
+                        }
+                    })
+                        .attr("data-src", function () {
+                            var src = $(this).attr("src");
+                            return src;
+                        });
+                    $imgs.lazyload({
+                        effect: "fadeIn",
+                        failure_limit: Math.max($imgs.length - 1, 0),
+                        event: 'lazylazy',
+                        placeholder: "",
+                        data_attribute: "src",
+                        appear: function (elements_left, settings) {
+                            if (!this.loaded) {
+                                $(this).removeClass("lazyload").addClass("lazyloading");
+                                // $(this).removeClass("lazyload").addClass("lazyloading").before($lazyloading);
+                            }
+                        },
+                        load: function (elements_left, settings) {
+                            if (this.loaded) {
+                                $(this).removeClass("lazyloading").addClass("lazyloaded").css({
+                                    "padding-top": "",
+                                    "padding-left": ""
+                                });
+                            }
+                        }
+                    });
+                }
+
+
+                $var.afterImagesLoaded(newColCount,newColWidth);
+
+                var dir = $("html").attr("dir"),
+                    _transformsEnabled = true;
+
+                if($var.rtl || (dir !== undefined && dir.toLowerCase() === 'rtl')){
+                    _transformsEnabled  = false;
+
+                    // modify Isotope's absolute position method
+                    $.Isotope.prototype._positionAbs = function( x, y ) {
+                        return { right: x, top: y };
+                    };
                 }
 
                 $tzppIsotope.isotope({
@@ -244,10 +310,16 @@
                     sortBy: $isotope_options.core.sortBy,
                     sortAscending: $isotope_options.core.sortAscending,
                     filter: $isotope_options.core.filter,
+                    transformsEnabled: _transformsEnabled,
                     masonry:{
                         columnWidth: newColWidth
                     },
-                    getSortData: $isotope_options.core.getSortData
+                    getSortData: $isotope_options.core.getSortData,
+                    onLayout: function(){
+                        if(typeof loadVisible !== "undefined") {
+                            loadVisible($imgs, 'lazylazy');
+                        }
+                    }
                 },function(){
                     if(parseInt($params.tz_show_filter,10) && $params.filter_tags_categories_order) {
                         //Sort tags or categories filter
@@ -275,7 +347,7 @@
             $optionLinks.click(function(event){
                 event.preventDefault();
                 var $isotope_this = $(this);
-                    // _btnActiveClass = "selected";
+                // _btnActiveClass = "selected";
 
                 // don't proceed if already selected
                 if ( $isotope_this.hasClass('selected') || $isotope_this.hasClass('active') ) {
@@ -489,67 +561,78 @@
         $.data(el,"tzPortfolioPlusIsotope", $tzppIsotope);
 
         // Call Function tz_init in window load and resize function
-        $(window).smartresize(function(){
-            $tzppIsotope.tz_init();
-        });
-        //$(window).smartresize();
+        /*** Smart Resize is the function of isotope v1 ***/
+        /*** debouncedresize is the function of isotope v2 ***/
+        if(typeof $(window).smartresize !== "undefined") {
+            $(window).smartresize(function () {
+                $tzppIsotope.tz_init();
+            });
+        }else{
+            $(window).on('debouncedresize', function(){
+                $tzppIsotope.tz_init();
+            });
+        }
 
         return this;
     };
     // Create options object
     $.tzPortfolioPlusIsotope.defaults  = { // This is default options
-        'columnWidth'               : '',
-        'mainElementSelector'       : '#TzContent',
-        'containerElementSelector'  : '#portfolio',
-        //'elementSelector'           : '.element',
-        'elementFeatureSelector'    : '.tz_feature_item',
-        'JSON'                      : {},
-        "timeline"                    : false,
+        "columnWidth"               : "",
+        "mainElementSelector"       : "#TzContent",
+        "containerElementSelector"  : "#portfolio",
+        "elementFeatureSelector"    : ".tz_feature_item",
+        "JSON"                      : {},
+        "timeline"                  : false,
+        "rtl"                       : false,
         'params'                    : {
-            'orderby_sec'                   : 'rdate',
-            'tz_show_filter'                : 1,
-            'filter_tags_categories_order'  : 'auto',
-            'tz_portfolio_plus_layout'      : 'ajaxButton',
-            'comment_function_type'         : 'default',
-            'tz_filter_type'                : 'categories',
-            'show_all_filter'               : 0,
-            'tz_comment_type'               : 'disqus',
-            'tz_show_count_comment'         : 1,
-            'tz_column_width'               : 233,
-            'layout_type'                   : ['masonry']
+            "orderby_sec"                   : "rdate",
+            "tz_show_filter"                : 1,
+            "filter_tags_categories_order"  : "auto",
+            "tz_portfolio_plus_layout"      : "ajaxButton",
+            "comment_function_type"         : "default",
+            "tz_filter_type"                : "categories",
+            "show_all_filter"               : 0,
+            "tz_comment_type"               : "disqus",
+            "tz_show_count_comment"         : 1,
+            "tz_column_width"               : 233,
+            "layout_type"                   : ["masonry"],
+            "enable_lazyload"               : 0
         },
-        'isotope_options'                   : {
-            'core'  : {
-                'itemSelector': '.element',
-                'layoutMode': '',
-                'sortBy': 'date',
-                'sortAscending': false,
-                'filter': '*',
-                'getSortData': {
-                    date: function ($elem) {
-                        var number = ($elem.hasClass('element') && $elem.attr('data-date').length) ?
-                            $elem.attr('data-date') : $elem.find('.create').text();
+        "isotope_options"                   : {
+            "core"  : {
+                "itemSelector": ".element",
+                "layoutMode": "",
+                "sortBy": "date",
+                "sortAscending": false,
+                "filter": "*",
+                "getSortData": {
+                    date: function ($_el) {
+                        var $el = (typeof $_el.hasClass === "undefined" )?$($_el):$_el,
+                            number = ($el.hasClass("element") && $el.attr("data-date").length) ?
+                                $el.attr("data-date") : $el.find(".create").text();
                         return parseInt(number,10);
                     },
-                    hits: function ($elem) {
-                        var number = ($elem.hasClass('element') && $elem.attr('data-hits').length) ?
-                            $elem.attr('data-hits') : $elem.find('.hits,.tpp-item-hit').text();
+                    hits: function ($_el) {
+                        var $el = (typeof $_el.hasClass === "undefined" )?$($_el):$_el,
+                            number = ($el.hasClass("element") && $el.attr("data-hits").length) ?
+                                $el.attr("data-hits") : $el.find(".hits,.tpp-item-hit").text();
                         return parseInt(number,10);
                     },
-                    name: function ($elem) {
-                        var name = ($elem.hasClass('element') && $elem.find('.TzPortfolioTitle.name,.tpp-item-title.name')
-                                .length)?$elem.find('.TzPortfolioTitle.name, .tpp-item-title.name').text().trim():
-                            (($elem.attr('data-title').length)?$elem.attr('data-title'):''),
-                            itemText = name.length ? name : $elem.text().trim();
+                    name: function ($_el) {
+                        var $el = (typeof $_el.hasClass === "undefined" )?$($_el):$_el,
+                            name = ($el.hasClass("element") && $el.find(".TzPortfolioTitle.name,.tpp-item-title.name")
+                                .length)?$el.find(".TzPortfolioTitle.name, .tpp-item-title.name").text().trim():
+                                (($el.attr("data-title").length)?$el.attr("data-title"):""),
+                            itemText = name.length ? name : $el.text().trim();
                         return itemText;
                     }
                 }
             },
-            'filterSelector'    : '#tz_options .option-set',
-            'tagFilter'         : 'a',
-            'sortParentTag'     : '#filter',
-            'sortChildTag'      : 'a',
-            'complete'  : function(){}
+            "filterSelector"    : "#tz_options .option-set",
+            "tagFilter"         : "a",
+            "sortParentTag"     : "#filter",
+            "sortChildTag"      : "a",
+            "complete"  : function(){}
         },
         // Call back function
         beforeCalculateColumn   : function(){},

@@ -125,6 +125,9 @@ body {
       margin-top: 0;
     }
   }
+  [data-statistic-checking]{
+    text-transform: none;
+  }
 }
 
 //.tpDashboard .tpQuicklink .tpButton {
@@ -686,6 +689,31 @@ body {
 }
 .tpp-extension__list{
   margin-top: 25px;
+  .alert{
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .tpp-extension__list-inner{
+    position: relative;
+    > .loading{
+      //color: #fff;
+      font-size: 18px;
+      display: flex;
+      position: absolute;
+      z-index: 3;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 20px;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255, 0.75);
+      > span {
+        padding: 0 2px;
+      }
+    }
+  }
 }
 .tpp-extension__item{
   background: white;
@@ -1142,6 +1170,27 @@ form#field-form #jform_value{
   .btn-danger{
     .progress.progress-loading:before{
       background-color: #ff6776;
+    }
+  }
+  /* Since v2.4.0 */
+  .free-license{
+    color: white;
+    display: flex;
+    font-size: 18px;
+    margin-top: 10px;
+    padding: 17px 25px;
+    align-items: center;
+    margin-bottom: 20px;
+    background: url(https://www.tzportfolio.com/templates/tz_portfolio_plus_2/images/request-free-license.jpg) center;
+    background-size: cover;
+    > span{
+      flex: 1;
+    }
+    > .btn{
+      display: block;
+      padding: 7px 20px;
+      text-align: center;
+      text-transform: uppercase;
     }
   }
 }
