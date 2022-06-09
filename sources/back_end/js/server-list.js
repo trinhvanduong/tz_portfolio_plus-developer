@@ -42,33 +42,44 @@
                     exList.html(result.data.html);
                     $tppServer.find(settings.pagSelector).html(result.data.pagination);
                     $tppServer.find(settings.filterSelector).show();
+
                     exList.find(".modal").on("show.bs.modal", function () {
-                        var url = exList.find(".action-links [data-toggle=modal][href=\"#"+$(this).attr("id")+"\"]").data("url");
+                        if(typeof $(this).attr("data-iframe") !== "undefined"){
+                            var modalBody = $(this).find(".modal-body"),
+                                iframeHtml = $($(this).attr("data-iframe"));
 
-                        var modalBody = $(this).find(".modal-body"),
-                            iframeHtml  = $(settings.iframeHtml);
-                        iframeHtml.attr("src", url);
+                            modalBody.find("iframe").remove();
+                            modalBody.prepend(iframeHtml);
+                        }else {
+                            var url = exList.find(".action-links [data-toggle=modal][href=\"#" + $(this).attr("id") + "\"]").data("url");
 
-                        modalBody.find("iframe").remove();
-                        modalBody.prepend(iframeHtml);
+                            var modalBody = $(this).find(".modal-body"),
+                                iframeHtml = $(settings.iframeHtml);
+                            iframeHtml.attr("src", url);
+
+                            modalBody.find("iframe").remove();
+                            modalBody.prepend(iframeHtml);
+                        }
                     }).on("shown.bs.modal", function() {
-                        var modal  = $(this),
-                            iframe  = $(this).find("iframe"),
-                            modalHeight = modal.outerHeight(true),
-                            modalHeaderHeight = modal.find("div.modal-header:visible").outerHeight(true),
-                            modalBodyHeightOuter = modal.find("div.modal-body:visible").outerHeight(true),
-                            modalBodyHeight = modal.find("div.modal-body:visible").height(),
-                            modalFooterHeight = modal.find("div.modal-footer:visible").outerHeight(true),
-                            padding = modal.position().top,
-                            maxModalHeight = ($(window).height()-(padding*2)),
-                            modalBodyPadding = (modalBodyHeightOuter-modalBodyHeight),
-                            maxModalBodyHeight = maxModalHeight-(modalHeaderHeight+modalFooterHeight+modalBodyPadding);
+                        if(typeof $(this).attr("data-iframe") === "undefined"){
+                            var modal  = $(this),
+                                iframe  = $(this).find("iframe"),
+                                modalHeight = modal.outerHeight(true),
+                                modalHeaderHeight = modal.find("div.modal-header:visible").outerHeight(true),
+                                modalBodyHeightOuter = modal.find("div.modal-body:visible").outerHeight(true),
+                                modalBodyHeight = modal.find("div.modal-body:visible").height(),
+                                modalFooterHeight = modal.find("div.modal-footer:visible").outerHeight(true),
+                                padding = modal.position().top,
+                                maxModalHeight = ($(window).height()-(padding*2)),
+                                modalBodyPadding = (modalBodyHeightOuter-modalBodyHeight),
+                                maxModalBodyHeight = maxModalHeight-(modalHeaderHeight+modalFooterHeight+modalBodyPadding);
 
-                        var iframeHeight = iframe.height();
+                            var iframeHeight = iframe.height();
 
-                        if (iframeHeight > maxModalBodyHeight){
-                            modal.find(".modal-body").css({"max-height": maxModalBodyHeight, "overflow-y": "initial"});
-                            iframe.css("max-height", maxModalBodyHeight-modalBodyPadding);
+                            if (iframeHeight > maxModalBodyHeight){
+                                modal.find(".modal-body").css({"max-height": maxModalBodyHeight, "overflow-y": "initial"});
+                                iframe.css("max-height", maxModalBodyHeight-modalBodyPadding);
+                            }
                         }
                     });
 
@@ -79,6 +90,8 @@
                     $tppServer.find(settings.loadingSelector).hide();
                 }else{
                     $tppServer.find(settings.errorSelector).show();
+                    $tppServer.find(settings.loadingSelector).hide();
+                    $tppServer.find(settings.filterSelector).show();
                 }
             };
 

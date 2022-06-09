@@ -229,6 +229,9 @@
             $var.afterColumnWidth(newColCount,newColWidth);
 
             function loadVisible($els, trigger) {
+                if(typeof $els === "undefined"){
+                    return;
+                }
                 $els.filter(function () {
                     var rect = this.getBoundingClientRect();
                     return rect.top >= 0 && rect.top <= window.innerHeight;
@@ -268,7 +271,7 @@
                     $imgs.lazyload({
                         effect: "fadeIn",
                         failure_limit: Math.max($imgs.length - 1, 0),
-                        event: 'lazylazy',
+                        // event: 'lazylazy',
                         placeholder: "",
                         data_attribute: "src",
                         appear: function (elements_left, settings) {
@@ -316,7 +319,7 @@
                     },
                     getSortData: $isotope_options.core.getSortData,
                     onLayout: function(){
-                        if(typeof loadVisible !== "undefined") {
+                        if(parseInt($params.enable_lazyload,10) && typeof loadVisible !== "undefined") {
                             loadVisible($imgs, 'lazylazy');
                         }
                     }

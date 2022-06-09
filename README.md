@@ -10,6 +10,12 @@ Demo: http://demo.tzportfolio.com/
 
 *** Changelog ***
 
+09/06/2022 - 2.6.0
+
+	- Update jquery ui
+	- Update jquery lazyload v1.9.7
+	- Change scss of file back_end/scss/style.scss
+
 22/11/2019 - 2.3.6
 
 	- Added scss files in back-end.
