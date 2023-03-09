@@ -214,6 +214,17 @@ gulp.task('js-minify__back-end_layoutadmin', async function() {
     }))
     .pipe(gulp.dest('tz_portfolio_plus_sources/back_end/dist'))
 });
+gulp.task('js-minify__back-end_script', async function() {
+    gulp.src(['sources/back_end/js/script.js'])
+        .pipe(minify({
+            ext:{
+                src:'.js',
+                min:'.min.js'
+            },
+            exclude: ['tasks']
+        }))
+        .pipe(gulp.dest('sources/back_end/dist'))
+});
 
 // var gulp = require('gulp');
 // var uglify = require('gulp-uglify');
