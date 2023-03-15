@@ -13,7 +13,7 @@
         }
 
         // Remove addon_task value for draggable of add-on data list page
-        if(formData !== undefined && formData.has("addon_task")){
+        if(typeof formData !== "undefined" && formData.has("addon_task")){
             formData.delete("addon_task");
         }
     });
