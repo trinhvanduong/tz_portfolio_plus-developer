@@ -158,8 +158,8 @@ gulp.task('cssmin-tz_portfolio', function () {
 // });
 
 var minify = require('gulp-minify');
-gulp.task('js-minify__site-tz_portfolio_plus', async function() {
-    gulp.src(['tz_portfolio_plus_sources/front_end/js/core.js', 'tz_portfolio_plus_sources/front_end/js/tz_portfolio_plus.js'])
+gulp.task('js-minify__site-tz_portfolio_plus-script', async function() {
+    gulp.src([ 'sources/front_end/js/tz_portfolio_plus.js'])
         .pipe(minify({
             ext:{
                 // src:'.js',
@@ -167,8 +167,19 @@ gulp.task('js-minify__site-tz_portfolio_plus', async function() {
             },
             exclude: ['tasks']
         }))
-        .pipe(gulp.dest('tz_portfolio_plus_sources/front_end/dist'))
+        .pipe(gulp.dest('sources/front_end/dist'))
 });
+// gulp.task('js-minify__site-tz_portfolio_plus', async function() {
+//     gulp.src(['tz_portfolio_plus_sources/front_end/js/core.js', 'tz_portfolio_plus_sources/front_end/js/tz_portfolio_plus.js'])
+//         .pipe(minify({
+//             ext:{
+//                 // src:'.js',
+//                 min:'.min.js'
+//             },
+//             exclude: ['tasks']
+//         }))
+//         .pipe(gulp.dest('tz_portfolio_plus_sources/front_end/dist'))
+// });
 gulp.task('js-minify-lib-infinitescroll', async function() {
     gulp.src(['tz_portfolio_plus_sources/front_end/js/libraries/jquery.infinitescroll.custom.js'])
         .pipe(minify({
