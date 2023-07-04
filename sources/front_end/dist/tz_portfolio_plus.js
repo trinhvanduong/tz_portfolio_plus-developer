@@ -755,6 +755,9 @@
                             });
                             $($var.sortParentTag).append($newFilter);
                             var $tzppIsotope    = $tzppScroll.data("tzPortfolioPlusIsotope");
+                            if(typeof $tzppIsotope === "undefined"){
+                                return data.articles;
+                            }
                             $tzppIsotope.loadPortfolio();
                             if(typeof tzSortFilter != 'undefined') {
                                 tzSortFilter($($var.sortParentTag).find($var.sortChildTag), $($var.sortParentTag), $params.filter_tags_categories_order);
@@ -839,6 +842,9 @@
                         $newElems.animate({opacity: 1});
 
                         var $tzppIsotope    = $tzppScroll.data("tzPortfolioPlusIsotope");
+                        if(typeof $tzppIsotope === "undefined"){
+                            return;
+                        }
                         $tzppIsotope.tz_init();
                         if($var.timeline){
                             // trigger scroll again
@@ -921,11 +927,11 @@
                 if(($(window).scrollTop() + $(window).height()) >= ($tzppScroll.offset().top + $tzppScroll.height())){
 
                     var $tzppIsotope    = $.data(el,"tzPortfolioPlusIsotope"),
-                        _fSelectedClass = $tzppIsotope.vars.isotope_options.filterSelector + "[data-option-key=filter] " +
-                            $tzppIsotope.vars.isotope_options.tagFilter,
+                        _fSelectedClass = typeof $tzppIsotope !== "undefined"?($tzppIsotope.vars.isotope_options.filterSelector + "[data-option-key=filter] " +
+                            $tzppIsotope.vars.isotope_options.tagFilter):"",
                         _filterSelected = $(_fSelectedClass + ".selected," + _fSelectedClass + ".active"),
                         $loadDone   = _filterSelected.length?$.data(_filterSelected[0], "infinitescroll"):undefined,
-                        $elAll  = $tzppIsotope.find($tzppIsotope.vars.isotope_options.itemSelector);
+                        $elAll  = typeof $tzppIsotope !== "undefined"?$tzppIsotope.find($tzppIsotope.vars.isotope_options.itemSelector):[];
 
                     if($.data(el, "tppinfscr") === "loading" || ($elAll.length >= TZ_Portfolio_Plus.infiniteScroll.countItems ||
                         ($elAll.length < TZ_Portfolio_Plus.infiniteScroll.countItems &&
