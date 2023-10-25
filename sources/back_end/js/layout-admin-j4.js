@@ -434,15 +434,21 @@ jQuery(function($){
                 html: true,
                 sanitize: false,
                 placement: 'left',
-                content: function () {
+                content: function (event) {
 
-                    var id = $(this).attr('href');
+                    var __el_pop = $(this);
 
-                    var currentName = $(this).parent().prev().find('>span.rowdocs>.rownameinput');
+                    if(this === window && typeof event !== "undefined"){
+                        __el_pop    = $(event);
+                    }
+
+                    var id = __el_pop.attr('href');
+
+                    var currentName = __el_pop.parent().prev().find('>span.rowdocs>.rownameinput');
 
                     setTimeout(function ($this, value) {
                         $this.parent().find('>.popover .rowname').val(value);
-                    }, 300, $(this), currentName.val());
+                    }, 300, __el_pop, currentName.val());
 
                     $("#content,#element-box").delegate(".popover input.rowname", 'blur', function (event) {
 
@@ -453,7 +459,7 @@ jQuery(function($){
                     });
 
                     // background color
-                    var currentBackgroundColor = $(this).parent().prev().find('>span.rowdocs>.rowbackgroundcolorinput');
+                    var currentBackgroundColor = __el_pop.parent().prev().find('>span.rowdocs>.rowbackgroundcolorinput');
 
                     setTimeout(function ($this, value) {
                         $this.parent().find('>.popover .rowbackgroundcolor').val(value);
@@ -477,10 +483,10 @@ jQuery(function($){
 
                         // $this.parent().find('>.popover .rowtextcolor').show();
 
-                    }, 300, $(this), currentBackgroundColor.val());
+                    }, 300, __el_pop, currentBackgroundColor.val());
 
                     // text color
-                    var currentTextColor = $(this).parent().prev().find('>span.rowdocs>.rowtextcolorinput');
+                    var currentTextColor = __el_pop.parent().prev().find('>span.rowdocs>.rowtextcolorinput');
 
                     setTimeout(function ($this, value) {
                         $this.parent().find('>.popover .rowtextcolor').val(value);
@@ -502,11 +508,11 @@ jQuery(function($){
                             }
                         });
 
-                    }, 300, $(this), currentTextColor.val());
+                    }, 300, __el_pop, currentTextColor.val());
 
 
                     // link color
-                    var currentLinkColor = $(this).parent().prev().find('>span.rowdocs>.rowlinkcolorinput');
+                    var currentLinkColor = __el_pop.parent().prev().find('>span.rowdocs>.rowlinkcolorinput');
 
                     setTimeout(function ($this, value) {
                         $this.parent().find('>.popover .rowlinkcolor').val(value);
@@ -528,11 +534,11 @@ jQuery(function($){
                             }
                         });
 
-                    }, 300, $(this), currentLinkColor.val());
+                    }, 300, __el_pop, currentLinkColor.val());
 
 
                     // link hover color
-                    var currentLinkHoverColor = $(this).parent().prev().find('>span.rowdocs>.rowlinkhovercolorinput');
+                    var currentLinkHoverColor = __el_pop.parent().prev().find('>span.rowdocs>.rowlinkhovercolorinput');
 
                     setTimeout(function ($this, value) {
                         $this.parent().find('>.popover .rowlinkhovercolor').val(value);
@@ -554,15 +560,15 @@ jQuery(function($){
                             }
                         });
 
-                    }, 300, $(this), currentLinkHoverColor.val());
+                    }, 300, __el_pop, currentLinkHoverColor.val());
 
 
                     // css margin
-                    var currentMargin = $(this).parent().prev().find('>span.rowdocs>.rowmargininput');
+                    var currentMargin = __el_pop.parent().prev().find('>span.rowdocs>.rowmargininput');
 
                     setTimeout(function ($this, value) {
                         $this.parent().find('>.popover .rowmargin').val(value);
-                    }, 300, $(this), currentMargin.val());
+                    }, 300, __el_pop, currentMargin.val());
 
                     $("#content,#element-box").delegate(".popover input.rowmargin", 'blur', function (event) {
 
@@ -572,11 +578,11 @@ jQuery(function($){
                     });
 
                     // css padding
-                    var currentPadding = $(this).parent().prev().find('>span.rowdocs>.rowpaddinginput');
+                    var currentPadding = __el_pop.parent().prev().find('>span.rowdocs>.rowpaddinginput');
 
                     setTimeout(function ($this, value) {
                         $this.parent().find('>.popover .rowpadding').val(value);
-                    }, 300, $(this), currentPadding.val());
+                    }, 300, __el_pop, currentPadding.val());
 
                     $("#content,#element-box").delegate(".popover input.rowpadding", 'blur', function (event) {
 
@@ -586,11 +592,11 @@ jQuery(function($){
                     });
 
                     // css class
-                    var currentCss = $(this).parent().prev().find('>span.rowdocs>.rowcustomclassinput');
+                    var currentCss = __el_pop.parent().prev().find('>span.rowdocs>.rowcustomclassinput');
 
                     setTimeout(function ($this, value) {
                         $this.parent().find('>.popover .rowcustomclass').val(value);
-                    }, 300, $(this), currentCss.val());
+                    }, 300, __el_pop, currentCss.val());
 
                     $("#content,#element-box").delegate(".popover input.rowcustomclass", 'blur', function (event) {
 
@@ -600,7 +606,7 @@ jQuery(function($){
 
                     });
 
-                    var currentResponsive = $(this).parent().prev().find('>span.rowdocs>.rowresponsiveinput').val().split(/\s+/);
+                    var currentResponsive = __el_pop.parent().prev().find('>span.rowdocs>.rowresponsiveinput').val().split(/\s+/);
 
                     $(id).find('#rowresponsiveinputs input:checkbox').removeAttr('checked');
                     $.each(currentResponsive, function (index, item) {
