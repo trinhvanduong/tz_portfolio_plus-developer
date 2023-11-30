@@ -227,15 +227,21 @@ jQuery(function($){
             $('a[rel="popover"]').popover({
                 html: true,
                 sanitize: false,
-                content: function () {
+                content: function (event) {
 
-                    var id = $(this).attr('href');
+                    var __el_pop = $(this);
 
-                    var currentSpan = $(this).closest(".column").find("> input.widthinput-lg").val();
+                    if(this === window && typeof event !== "undefined"){
+                        __el_pop    = $(event);
+                    }
+
+                    var id = __el_pop.attr('href');
+
+                    var currentSpan = __el_pop.closest(".column").find("> input.widthinput-lg").val();
 
                     setTimeout(function (value, $this) {
                         $this.parent().find('.popover #spanwidth select').val(value);
-                    }, 300, currentSpan, $(this));
+                    }, 300, currentSpan, __el_pop);
 
 
                     $("#content,#element-box").delegate(".popover select.possiblewidths", 'change', function (event) {
@@ -261,11 +267,11 @@ jQuery(function($){
                         $(this).closest(".column").removeClass().addClass("column span" + newSpan + " col-md-" + newSpan);
                     });
 
-                    var currentOffset   = $(this).closest(".column").find("> input.offsetinput-lg").val();
+                    var currentOffset   = __el_pop.closest(".column").find("> input.offsetinput-lg").val();
 
                     setTimeout(function (value, $this) {
                         $this.parent().find(".popover #spanoffset select").val(value);
-                    }, 300, currentOffset, $(this));
+                    }, 300, currentOffset, __el_pop);
 
                     $("#content,#element-box").delegate(".popover select.possibleoffsets", 'change', function (event) {
 
@@ -292,7 +298,7 @@ jQuery(function($){
                         }
 
                         if (newOffset == '0') {
-                            $(this).parents('.popover').parent().parent().removeClass('offset0');
+                            __el_pop.parents('.popover').parent().parent().removeClass('offset0');
                             switch ($("button[class*='tz-admin-dv'].active").attr('data-device')) {
                                 case 'xs':
                                     $(this).closest(".column").find('>.offsetinput-xs').val('');
@@ -311,13 +317,13 @@ jQuery(function($){
                         }
                     });
 
-                    var currentIncludetype = $(this).closest(".column").find("> input.typeinput").val();
+                    var currentIncludetype = __el_pop.closest(".column").find("> input.typeinput").val();
 
                     setTimeout(function (value, $this) {
                         if(value) {
                             $this.parent().find(".popover #includetypes select").val(value);
                         }
-                    }, 300, currentIncludetype, $(this));
+                    }, 300, currentIncludetype, __el_pop);
 
                     $("#content,#element-box").delegate(".popover select.includetypes", 'change', function (event) {
 
@@ -333,11 +339,11 @@ jQuery(function($){
                     });
 
 
-                    var currentPosition = $(this).closest(".column").find('.positioninput').val();
+                    var currentPosition = __el_pop.closest(".column").find('.positioninput').val();
 
                     setTimeout(function (value, $this) {
                         $this.parent().find(".popover #positions select").val(value);
-                    }, 300, currentPosition, $(this));
+                    }, 300, currentPosition, __el_pop);
 
                     $("#content,#element-box").delegate(".popover select.positions", 'change', function (event) {
 
@@ -352,7 +358,7 @@ jQuery(function($){
 
                     setTimeout(function (value, $this) {
                         $this.parent().find(".popover #inputcustomclass").val(value);
-                    }, 300, currentCustomClass, $(this));
+                    }, 300, currentCustomClass, __el_pop);
 
                     $("#content,#element-box").delegate(".popover input.customclass", 'blur', function (event) {
 
@@ -378,7 +384,7 @@ jQuery(function($){
 
                     });
 
-                    var currentResponsive = $(this).closest(".column").find('.responsiveclassinput').val().split(/\s+/);
+                    var currentResponsive = __el_pop.closest(".column").find('.responsiveclassinput').val().split(/\s+/);
 
                     $(id).find('#responsive input:checkbox').removeAttr('checked');
 
@@ -412,7 +418,7 @@ jQuery(function($){
 
                     });
 
-                    $(this).closest('.columntools').addClass('open');
+                    __el_pop.closest('.columntools').addClass('open');
 
                     return $(id).html();
                 },
