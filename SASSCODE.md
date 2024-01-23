@@ -1,0 +1,2 @@
+sass sources/back_end/scss/style.scss:sources/back_end/dist/style.css --style=compressed --quiet
+sass sources/back_end/scss/admin-layout.scss:sources/back_end/dist/admin-layout.css --style=compressed --quiet

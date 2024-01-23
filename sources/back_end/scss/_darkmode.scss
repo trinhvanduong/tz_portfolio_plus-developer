@@ -1,0 +1,141 @@
+$tpp-body-bg-dark: var(--template-bg-dark-90);
+$tpp-widget-bg: var(--secondary-bg);
+$tpp-widget-border: $tpp-widget-bg;
+
+$tpp-widget-link-bg: $tpp-widget-bg;
+$tpp-widget-link-color: var(--body-color);
+$tpp-widget-link-border: $tpp-widget-border;
+$tpp-widget-link-hover-bg: var(--template-bg-dark-65);
+//$tpp-widget-link-bg: var(--template-bg-dark-65);
+//$tpp-widget-link-color: var(--body-color);
+//$tpp-widget-link-border: var(--template-bg-dark-80);
+//$tpp-widget-link-hover-bg: var(--template-bg-dark-65);
+
+//$tpp-alert-bg: var(--template-bg-dark-80);
+$tpp-alert-bg: $tpp-widget-bg;
+$tpp-alert-color: var(--body-color);
+
+
+@media (prefers-color-scheme: dark){
+  body {
+    &.com_tz_portfolio_plus {
+      background-color: $tpp-body-bg-dark;
+    }
+  }
+  .tpContainer {
+    padding: 0 !important;
+    border: none;
+    background: none;
+    .row .j-main-container &{
+      background: none;
+    }
+  }
+  .tpp-upgrade-pro.alert{
+    //--alert-bg-color: var(--template-bg-dark-80);
+    //color: var(--body-color);
+    //background-color: var(--alert-bg-color, var(--white));
+    color: $tpp-alert-color;
+    background-color: $tpp-alert-bg;
+    border-color: #2a88ab;
+    h4{
+        //color: var(--body-color);
+        color: $tpp-alert-color;
+    }
+  }
+  .tpDashboard{
+    .tpHeadline{
+      border: none;
+      color: $tpp-alert-color;
+      background-color: $tpp-alert-bg;
+    }
+    .tpQuicklink .tpButton a{
+      color: $tpp-widget-link-color;
+      background: $tpp-widget-link-bg;
+      border-color: $tpp-widget-link-border;
+      &:hover {
+        background: $tpp-widget-link-hover-bg;
+        border-color: $tpp-widget-link-hover-bg;
+      }
+    }
+    .tpInfo {
+      background: $tpp-widget-bg;
+      border-color: $tpp-widget-border;
+      .tpVersion{
+        .latest{
+          color: var(--success);
+        }
+        .versions-meta .text-muted span{
+          color: var(--success);
+        }
+        .requires-updating{
+          color: var(--danger);
+        }
+        .versions-meta .text-muted .oldversion{
+          color: var(--danger);
+        }
+      }
+    }
+  }
+  .tp-widget {
+    //border-color: var(--template-bg-dark-80);
+    //background-color: var(--template-bg-dark-80);
+    border-color: $tpp-widget-border;
+    background-color: $tpp-widget-bg;
+  }
+  .tp-feed-blog .rss-date {
+    color: var(--gray-400);
+  }
+  .com_tz_portfolio_plus{
+    &.view-acl{
+      joomla-field-permissions > joomla-tab > *{
+        height: 100%;
+        border-top: none;
+        border-left: none;
+        border-bottom: none;
+        background-color: var(--body-bg);
+      }
+    }
+  }
+  .tpArticle .tab-content{
+    --nav-tabs-border-color: var(--border-color);
+    background-color: var(--body-bg);
+    border-left-color: var(--nav-tabs-border-color);
+    border-right-color: var(--nav-tabs-border-color);
+    border-bottom-color: var(--nav-tabs-border-color);
+  }
+  .com_tz_portfolio_plus{
+    .field-spacer{
+      .alert-warning {
+        color: var(--alert-color);
+        background-color: var(--alert-bg);
+        border-color: var(--alert-border-color);
+      }
+    }
+  }
+  .tpp-extension__flexbox .tpp-extension__item{
+    background: var(--template-bg-dark-80);
+    border-color: var(--template-bg-dark-65);
+    .bottom{
+      //background: var(--template-bg-dark-90);
+      background: var(--secondary-bg);
+      border-top-color: var(--template-bg-dark-65);
+    }
+    .action-links{
+      .install-now{
+        color: var(--body-color);
+        //background: var(--template-bg-dark-70);
+        border-color: var(--secondary-color);
+      }
+      .btn-outline-success{
+        &.disabled{
+          opacity: 1;
+        }
+      }
+    }
+  }
+  .subhead #toolbar-youtube{
+    .btn > span{
+      color: var(--subhead-btn-accent-color);
+    }
+  }
+}

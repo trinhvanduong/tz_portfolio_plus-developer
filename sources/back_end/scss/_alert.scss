@@ -1,0 +1,74 @@
+.tpp-upgrade-pro{
+  @media(max-width: 767px){
+      text-align: center;
+      padding-bottom: 25px;
+      .alert{
+        .content{
+          display: block;
+        }
+        .tpp-upgrade-pro__icon{
+          font-size: 3.2em;
+        }
+      }
+      .content__inner{
+        text-align: left;
+      }
+  }
+  &.alert{
+    padding: 0;
+    color: #000;
+    margin: 10px 0 20px;
+    background: white;
+    border:  1px solid #ebebeb;
+    position:  relative;
+    [data-tp-license-active],
+    [data-tp-license-loading]{
+      align-self: center;
+      margin-right: 25px;
+    }
+    h4{
+      color: #000;
+    }
+    .close{
+      right: 0;
+      height: 100%;
+      position: absolute;
+      padding-right: 15px;
+    }
+    .content{
+      display: flex;
+      padding-top: 0;
+      align-items: stretch;
+    }
+    .tpp-upgrade-pro__icon{
+      //width: 70px;
+      color: white;
+      display: flex;
+      padding: 0 23px;
+      font-size: 2.7em;
+      background: #2a88ab;
+      align-items:  center;
+      justify-content: center;
+    }
+    .content__inner{
+      flex: 1;
+      padding: .75rem 1.25rem;
+    }
+    p{
+      margin-bottom: 0;
+    }
+    .j-main-container &{
+      margin: 20px 0;
+    }
+    @media (max-width: 576px) {
+      .content{
+        display: block;
+        padding: 0 0 20px;
+      }
+      .tpp-upgrade-pro__icon{
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+    }
+  }
+}
